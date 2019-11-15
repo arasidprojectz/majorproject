@@ -1,4 +1,4 @@
-# Major Project Proposal
+# Major Project Proposal - Bromons
 
 ## Description
 Our goal is to create a top-down RPG similar to Pokemon but on a much smaller scale. There will be a movable character with which the player will travel from city to city battling, catching, and leveling up to eventually achieve the game's main goal which will likely be to defeat the game's strongest NPC.
@@ -7,6 +7,7 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - A movable character
 - NPCs
 - Character dialog/interactions
+- Pokemon sprites
 - Battling/characters and attacks to battle with
 - Battle system (hitpoints/damage calculation)
 - AI system for battling
@@ -14,13 +15,13 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - A goal for the player to pursue
 - Different maps/ability to view maps
 - Level system for Pokemon
-- Different cities 
+- Different cities
 - Ability to enter buildings/interact with the environment
 - Item system - different items will have different effects on Pokemon (ex. healing items)
 - Pokemon center (place where you can heal your pokemon)/Pokemon shop where you can buy items
 - Currency
 - Pokemon types (with advantages/disadvantages)
-- Menu system displaying Pokemon, Items, Save(nice to have), Trainer Card(holds information such as time spent playing, player name, currency), Pokedex(nice to have), Options, Return to Main Menu
+- Menu system displaying Pokemon, Items, Save (nice to have), Trainer Card (holds information such as time spent playing, player name, currency), Pokedex (nice to have), Options, Return to Main Menu
 
 ## Nice To Have:
 - Variations in Sprites
@@ -31,8 +32,9 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - Intro screen with multiple save files and instructions
 - Pokedex (saves data of encountered pokemon)
 - Music/sound effects
-- Mini map (ability to toggle on/off)
+- Mini map (able to toggle on/off)
 - Walking animations
+- Pokemon sprite animations
 - Story
 - HTML/CSS formatting
 - Pokemon abilities
