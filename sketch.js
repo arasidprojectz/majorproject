@@ -1,10 +1,7 @@
-// Interactive Scene (Part of Major Project)
-// Abrar Zaher
-// 25/09/19
-//
-// Extra for Experts:
-// - background music
-// - "created"/photoshopped my own sprites (except the main character sprites)
+// Major Project - Bromons
+// Abrar Zaher and Nabeel Ramen
+// 
+// 12/30/1867
 
 //input box for name
 let inputBox;
@@ -22,6 +19,8 @@ let introBg;
 
 //background music/sound effects
 let introMusic;
+
+let changeMusic = true;
 
 //characters
 let playerName;  //going to make class for players as game development progresses
@@ -41,8 +40,9 @@ let inputButton;
 
 function preload() {
   introBg = loadImage("assets/introbackground.PNG");
-  prof = [loadImage("assets/professor1.PNG"), loadImage("assets/professor1.PNG"), loadImage("assets/professor2.PNG"), loadImage("assets/professor1.PNG"), loadImage("assets/professor3.PNG"), loadImage("assets/professor4.PNG")]; //professor sprite from https://www.spriters-resource.com/game_boy_advance/pokemonfireredleafgreen/
+  prof = [loadImage("assets/professor1.png"), loadImage("assets/professor1.png"), loadImage("assets/professor2.png"), loadImage("assets/professor1.png"), loadImage("assets/professor3.png"), loadImage("assets/professor4.png")]; //professor sprite from https://www.spriters-resource.com/game_boy_advance/pokemonfireredleafgreen/
   introMusic = loadSound("assets/introMusic.mp3"); //music from youtube (https://www.youtube.com/watch?v=1RRGInmOhTQ)
+  //change these sprites 
   maleCharacterSprite = loadImage("assets/maleTestSprite.png");
   femaleCharacterSprite = loadImage("assets/femaleTestSprite.png"); //both male and female sprites from https://www.pngtube.com/viewm/TbRJb_female-and-male-stick-figure/
 }
@@ -50,36 +50,43 @@ function preload() {
 function setup() {
   createCanvas(3 * (windowWidth/5), (3 * (windowWidth/5))/1.6);
   background(0);
-  introMusic.play();
 }
 
 //loops through specific parts of the game using state variables, more will be added
 function draw() {
-  if (state === 0) {
+  if (state === 0) {  
     gameIntro();
   } 
   else if (state === 1) {
-    background(0);
+    //playGame();
   }
 }
 
 //intro scene for final project
 function gameIntro() {
+  if (changeMusic) {
+    introMusic.play();
+    changeMusic = false;
+  }
+
   //loads background image and professor sprite
+  imageMode(CORNER);
   background(introBg);
-  image(prof[introTextNum], width/3, height/6, width/4, 5 * (height/8));
+  imageMode(CENTER);
+  image(prof[introTextNum], width/2, height/2, width/4, 5 * (height/8));
   
   //checks for specific states of the intro that have other functions to go through
   if (introTextNum === 6) {
     state = 1;
     introMusic.stop();
+    changeMusic = true;
   }
   else if (introTextNum === 2) {
     noLoop(); //loop ended to allow user to input name
     pickName();
   }
   else if (introTextNum === 4) {
-    pickSprite();
+    //pickSprite();
   }
 
   //loads textbox with dialog based of intro state, needed specific one for 3 as it complicated the variable assignment when in array
@@ -97,10 +104,9 @@ function gameIntro() {
   }
 }
 
-function pickSprite() {
-  //I will add actual sprites for these, did not find the time for this assignment
-  image(maleCharacterSprite, width/6, height/8, width/6, height/2);
-  image(femaleCharacterSprite, 7 * (width/12), height/8, width/6, height/2);
+function pickSprite() {  // change the sprites for selection and also the formatting cuz it look kinda wack rn
+  image(maleCharacterSprite, width/3, height/2, width/6, height/2);
+  image(femaleCharacterSprite, 2 * (width/3), height/2, width/6, height/2);
 
   //checks if mouse hovering over sprite
   if (mouseX <= width/6 + width/6 && mouseX >= width/6 && mouseY >= height/8 && mouseY <= height/8 + height/2) {
@@ -124,7 +130,7 @@ function pickSprite() {
 }
 
 //created input box for player name
-function pickName() {
+function pickName() {  // remeber to format input box
   inputBox = createInput('');
   inputBox.position(width/2 + (inputBox.width * 0.8), 2 * (height/3));
 
@@ -138,7 +144,6 @@ function pickName() {
   textSize(50);
 }
 
-//removes input stuff, eventually the input value will be assigned for the main character in a character class
 function setPlayerName() {
   playerName = inputBox.value();
 
