@@ -4,7 +4,7 @@
 // 
 // 12/30/1867
 
-class Characters {
+class Character {
   constructor(theName, spriteArray, pokebroArray, x, y) {
     this.name = theName;
     
@@ -61,6 +61,10 @@ class Pokebros {
 
   displayInParty() {
     //hello
+  }
+
+  useAttack(attackUsed) {
+
   }
 }
 

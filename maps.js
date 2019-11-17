@@ -4,8 +4,6 @@
 // 
 // 12/30/1867
 
-let maps = [];
-
-let lilFlexTown = {
-  
-}
+let lilFlexTown = [
+    
+]

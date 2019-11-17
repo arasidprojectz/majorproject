@@ -16,10 +16,10 @@ let introBg;
 //background music/sound effects
 let introMusic;
 
-let changeMusic = true;
+let changeState = true;
 
 //characters
-let playerName;  
+let mainPlayer;  
 
 //sprites
 let prof;
@@ -33,11 +33,14 @@ function preload() {
   introBg = loadImage("assets/introbackground.PNG");
   prof = [loadImage("assets/professor1.png"), loadImage("assets/professor1.png"), loadImage("assets/professor2.png"), loadImage("assets/professor1.png"), loadImage("assets/professor4.png")]; 
   introMusic = loadSound("assets/introMusic.mp3"); 
+  mainCharacterSprites = [loadImage("assets/frontSprite.png"), loadImage("assets/backSprite.png"), loadImage("assets/rightSprite.png"), loadImage("assets/leftSprite.png")];
 }
 
 function setup() {
   createCanvas(3 * (windowWidth/5), (3 * (windowWidth/5))/1.6);
   background(0);
+
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2);
 }
 
 function draw() {
@@ -45,16 +48,25 @@ function draw() {
     gameIntro();
   } 
   else if (state === 1) {
-    //playGame();
+    playGame();
+  }
+}
+
+function playGame() {
+  let maps = [] //put maps here
+
+  if (changeState) {
+    //play music from array
+    
   }
 }
 
 function gameIntro() {
   let introDialog = ["Welcome to the monde de Pokebro!!! Press spacebar to continue.", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
   
-  if (changeMusic) {
+  if (changeState) {
     introMusic.play();
-    changeMusic = false;
+    changeState = false;
   }
 
   imageMode(CORNER);
@@ -65,7 +77,7 @@ function gameIntro() {
   if (introTextNum === 5) {
     state = 1;
     introMusic.stop();
-    changeMusic = true;
+    changeState = true;
   }
   else if (introTextNum === 2) {
     noLoop(); 
@@ -73,7 +85,7 @@ function gameIntro() {
   }
 
   if (introTextNum === 3) {
-    textBox("Ah, yes, hello " + playerName + "!");
+    textBox("Ah, yes, hello " + mainPlayer.name + "!");
   }
   else {
     textBox(introDialog[introTextNum]);
@@ -100,7 +112,7 @@ function pickName() {  // remeber to format input box
 }
 
 function setPlayerName() {
-  playerName = inputBox.value();
+  mainPlayer.name = inputBox.value();
 
   inputBox.remove();
   inputButton.remove();
