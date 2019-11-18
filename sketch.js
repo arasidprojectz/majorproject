@@ -1,5 +1,7 @@
 // Major Project - Bromons
 // Abrar Zaher and Nabeel Ramen
+//
+// This is main code
 // 
 // 12/30/1867
 
@@ -29,6 +31,20 @@ let aPressed = false;
 let bPressed = false;
 let inputButton;
 
+let movingUp = false;
+let movingDown = false;
+let movingRight = false;
+let movingLeft = false;
+
+let directions = {
+  down: 0,
+  up: 1,
+  right: 2,
+  left: 3
+};
+
+let currentDirections = directions.down;
+
 function preload() {
   introBg = loadImage("assets/introbackground.PNG");
   prof = [loadImage("assets/professor1.png"), loadImage("assets/professor1.png"), loadImage("assets/professor2.png"), loadImage("assets/professor1.png"), loadImage("assets/professor4.png")]; 
@@ -49,16 +65,24 @@ function draw() {
   } 
   else if (state === 1) {
     playGame();
+    console.log("sfdsf");
   }
+
+  console.log(state);
+  console.log(introTextNum);
 }
 
 function playGame() {
-  let maps = [] //put maps here
-
-  if (changeState) {
-    //play music from array
+  // let maps = [] //put maps here
+  
+  // if (changeState) {
+  //   //play music from array
     
-  }
+  // }
+
+  background(220);
+
+
 }
 
 function gameIntro() {
@@ -68,18 +92,13 @@ function gameIntro() {
     introMusic.play();
     changeState = false;
   }
-
+  
   imageMode(CORNER);
   background(introBg);
   imageMode(CENTER);
   image(prof[introTextNum], width/2, height/2, width/4, 5 * (height/8));
   
-  if (introTextNum === 5) {
-    state = 1;
-    introMusic.stop();
-    changeState = true;
-  }
-  else if (introTextNum === 2) {
+  if (introTextNum === 2) {
     noLoop(); 
     pickName();
   }
@@ -92,12 +111,19 @@ function gameIntro() {
   }
 
   if (aPressed) {
-    introTextNum++;
+    if (introTextNum === 5) {
+      state++;
+      introMusic.stop();
+      changeState = true;
+    }
+    else{
+      introTextNum++;
+    }
     aPressed = false;
   }
 }
 
-function pickName() {  // remeber to format input box
+function pickName() {  // remember to format input box
   inputBox = createInput('');
   inputBox.position(width/2 + (inputBox.width * 0.8), 2 * (height/3));
 

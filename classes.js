@@ -1,6 +1,7 @@
 // Major Project - Bromons
-// This is where classes are defined
 // Abrar Zaher and Nabeel Ramen
+//
+// This is where classes are defined
 // 
 // 12/30/1867
 
