@@ -43,7 +43,7 @@ class Character {
 
 class Pokebros {
   constructor(nameString, aType, attackInt, defenseInt, speedInt, catchRateInt, spawnRateInt, movesetArray) {
-    this.name = nameSring;
+    this.name = nameString;
     this.type = aType;
 
     this.attack = attackInt;
@@ -79,7 +79,10 @@ class Towns {
   displayMap() {
     for (let i = 0; i < this.grid[0].length; i++) {
       for (let j = 0; j < this.grid[0].length; j++) {
-        
+        fill(this.grid[i][j] * 255);
+        stroke(255);
+
+        rect(i * groundUnit.width, j * groundUnit.height, groundUnit.width, groundUnit.height);
       }
     }
   }

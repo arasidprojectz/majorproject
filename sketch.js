@@ -11,6 +11,7 @@ let inputBox;
 //states
 let state = 0;
 let gameState = 0;
+let currentTown = 0;
 let introTextNum = 0;
 
 //backgrounds
@@ -70,7 +71,11 @@ function setup() {
   groundUnit.width = width/cols;
   groundUnit.height = height/rows;
 
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 + groundUnit.width/2, height/2);
+  
+  //towns
+  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
+  theRanch = new Towns("The Ranch", theRanchGrid);
 }
 
 function draw() {
@@ -83,7 +88,7 @@ function draw() {
 }
 
 function playGame() {
-  // let maps = [] //put maps here
+  let maps = [lilFlexTown, theRanch]; //put maps here
   
   // if (changeState) {
   //   //play music from array
@@ -93,13 +98,19 @@ function playGame() {
   background(220);
 
   if (gameState === 0) {
+    maps[currentTown].displayMap();
+
     mainPlayer.display();
     mainPlayer.move();
   }
+
+  console.log(maps);
+  console.log(currentTown);
+  console.log(maps[currentTown].name);
 }
 
 function gameIntro() {
-  let introDialog = ["Welcome to the monde de Pokebro!!! Press spacebar to continue.", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
+  let introDialog = ["Welcome to the monde de Bromon!!! Press spacebar to continue.", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
   
   if (changeState) {
     introMusic.play();
@@ -138,14 +149,14 @@ function gameIntro() {
 
 function pickName() {  // remember to format input box
   inputBox = createInput('');
-  inputBox.position(width/2 + (inputBox.width * 0.8), 2 * (height/3));
+  inputBox.position(width/4 + (inputBox.width * 0.8), 4 * (height/5));
 
   inputButton = createButton('Submit');
-  inputButton.position(inputBox.x + inputBox.width, 2 * (height/3));
+  inputButton.position(inputBox.x + inputBox.width, 4 * (height/5));
   inputButton.mousePressed(setPlayerName);
 
   greeting = createElement('h2', 'What is your name?');
-  greeting.position(width/2 + (inputBox.width * 0.8), 2 * (height/3) - 50);
+  greeting.position(width/4 + (inputBox.width * 0.8), 4 * (height/5) - 50);
 
   textSize(50);
 }
@@ -169,4 +180,3 @@ function textBox(theText) {
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
 }
-
