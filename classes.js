@@ -18,24 +18,24 @@ class Character {
   }
   
   display() {
-    image(this.sprite[currentDirections], this.x, this.y, unit * 2, unit * 2);
+    image(this.sprite[currentDirections], this.x, this.y, groundUnit.width, groundUnit.width);
   }
   
   move() {  //will change
     if (movingDown) {
-      this.y += unit;
+      this.y += groundUnit.height;
       movingDown = false;
     }
     else if (movingUp) {
-      this.y -= unit;
+      this.y -= groundUnit.height;
       movingUp = false;
     }   
     else if (movingRight) {
-      this.x += unit;
+      this.x += groundUnit.width;
       movingRight = false;
     }
     else if (movingLeft) {
-      this.x -= unit;
+      this.x -= groundUnit.width;
       movingLeft = false;
     }    
   }

@@ -10,6 +10,7 @@ let inputBox;
 
 //states
 let state = 0;
+let gameState = 0;
 let introTextNum = 0;
 
 //backgrounds
@@ -36,6 +37,14 @@ let movingDown = false;
 let movingRight = false;
 let movingLeft = false;
 
+let cols;
+let rows;
+
+let groundUnit = {
+  width: 0,
+  height: 0
+};
+
 let directions = {
   down: 0,
   up: 1,
@@ -54,7 +63,12 @@ function preload() {
 
 function setup() {
   createCanvas(3 * (windowWidth/5), (3 * (windowWidth/5))/1.6);
-  background(0);
+
+  cols = 30;
+  rows = 30;
+
+  groundUnit.width = width/cols;
+  groundUnit.height = height/rows;
 
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2);
 }
@@ -65,11 +79,7 @@ function draw() {
   } 
   else if (state === 1) {
     playGame();
-    console.log("sfdsf");
   }
-
-  console.log(state);
-  console.log(introTextNum);
 }
 
 function playGame() {
@@ -82,7 +92,10 @@ function playGame() {
 
   background(220);
 
-
+  if (gameState === 0) {
+    mainPlayer.display();
+    mainPlayer.move();
+  }
 }
 
 function gameIntro() {
@@ -111,7 +124,7 @@ function gameIntro() {
   }
 
   if (aPressed) {
-    if (introTextNum === 5) {
+    if (introTextNum === 4) {
       state++;
       introMusic.stop();
       changeState = true;
