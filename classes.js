@@ -42,16 +42,16 @@ class Character {
 }
 
 class Pokebros {
-  constructor(name, type, attack, defense, speed, catchRate, spawnRate, movesetArray) {
-    this.name = name;
-    this.type = type;
+  constructor(nameString, aType, attackInt, defenseInt, speedInt, catchRateInt, spawnRateInt, movesetArray) {
+    this.name = nameSring;
+    this.type = aType;
 
-    this.attack = attack;
-    this.defense = defense;
-    this.speed = speed;
+    this.attack = attackInt;
+    this.defense = defenseInt;
+    this.speed = speedInt;
 
-    this.catchRate = catchRate;
-    this.spawnRate = spawnRate;
+    this.catchRate = catchRateInt;
+    this.spawnRate = spawnRateInt;
 
     this.moveset = movesetArray;
   }
@@ -69,3 +69,18 @@ class Pokebros {
   }
 }
 
+class Towns {
+  constructor(nameString, mapArray) {
+    this.name = nameString;
+
+    this.grid = mapArray;
+  }
+
+  displayMap() {
+    for (let i = 0; i < this.grid[0].length; i++) {
+      for (let j = 0; j < this.grid[0].length; j++) {
+        
+      }
+    }
+  }
+}

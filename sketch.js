@@ -170,8 +170,3 @@ function textBox(theText) {
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
 }
 
-function keyPressed() {
-  if (key ===" ") {
-    aPressed = true;
-  }
-} 
