@@ -38,8 +38,13 @@ let movingDown = false;
 let movingRight = false;
 let movingLeft = false;
 
-let cols;
-let rows;
+const COLS = 20;
+const ROWS = 20;
+
+let mapPos = {
+  x: 15,
+  y: 15
+};
 
 let groundUnit = {
   width: 0,
@@ -65,11 +70,8 @@ function preload() {
 function setup() {
   createCanvas(3 * (windowWidth/5), (3 * (windowWidth/5))/1.6);
 
-  cols = 30;
-  rows = 30;
-
-  groundUnit.width = width/cols;
-  groundUnit.height = height/rows;
+  groundUnit.width = width/COLS;
+  groundUnit.height = height/ROWS;
 
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 + groundUnit.width/2, height/2);
   
@@ -110,7 +112,7 @@ function playGame() {
 }
 
 function gameIntro() {
-  let introDialog = ["Welcome to the monde de Bromon!!! Press spacebar to continue.", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
+  let introDialog = ["Welcome to the monde de Bromon!!! (Press spacebar to continue)", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry, but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
   
   if (changeState) {
     introMusic.play();

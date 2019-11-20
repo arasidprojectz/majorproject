@@ -13,9 +13,7 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - AI system for battling
 - Catching/battling wild Pokemons
 - A goal for the player to pursue
-- Different maps/ability to view maps
 - Level system for Pokemon
-- Different cities
 - Ability to enter buildings/interact with the environment
 - Item system - different items will have different effects on Pokemon (ex. healing items)
 - Pokemon center (place where you can heal your pokemon)/Pokemon shop where you can buy items
@@ -24,6 +22,8 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - Menu system displaying Pokemon, Items, Save (nice to have), Trainer Card (holds information such as time spent playing, player name, currency), Pokedex (nice to have), Options, Return to Main Menu
 
 ## Nice To Have:
+- Different maps/ability to view maps
+- Different cities
 - Variations in Sprites
 - Pokemon Evolution
 - Ability to catch more than a set amount of pokemons/also able to store pokemon in a box

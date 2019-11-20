@@ -16,3 +16,12 @@ canvas {
 ::-webkit-scrollbar {
     display: none;
 }
+
+/*body, html {
+    background-image: url("background.jpg");
+
+    /* Full height 
+    height: 100%
+
+    
+} */

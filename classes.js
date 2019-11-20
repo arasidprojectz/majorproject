@@ -22,20 +22,26 @@ class Character {
   }
   
   move() {  //will change
+    let atMapEdge = mapPos.x - floor(COLS/2)
+
     if (movingDown) {
-      this.y += groundUnit.height;
+      //this.y += groundUnit.height;
+      mapPos.y++;
       movingDown = false;
     }
     else if (movingUp) {
-      this.y -= groundUnit.height;
+      //this.y -= groundUnit.height;
+      mapPos.y--;
       movingUp = false;
     }   
     else if (movingRight) {
-      this.x += groundUnit.width;
+      //this.x += groundUnit.width;
+      mapPos.x++;
       movingRight = false;
     }
     else if (movingLeft) {
-      this.x -= groundUnit.width;
+      //this.x -= groundUnit.width;
+      mapPos.x--;
       movingLeft = false;
     }    
   }
@@ -65,7 +71,7 @@ class Pokebros {
   }
 
   useAttack(attackUsed) {
-
+    
   }
 }
 
@@ -76,13 +82,13 @@ class Towns {
     this.grid = mapArray;
   }
 
-  displayMap() {
-    for (let i = 0; i < this.grid[0].length; i++) {
-      for (let j = 0; j < this.grid[0].length; j++) {
+  displayMap() { 
+    for (let i = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; i++, xPos++) {
+      for (let j = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; j++, yPos++) {
         fill(this.grid[i][j] * 255);
         stroke(255);
 
-        rect(i * groundUnit.width, j * groundUnit.height, groundUnit.width, groundUnit.height);
+        rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
       }
     }
   }
