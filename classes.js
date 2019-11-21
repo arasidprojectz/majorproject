@@ -22,7 +22,7 @@ class Character {
   }
   
   move() {  //will change
-    let atMapEdge = mapPos.x - floor(COLS/2)
+    //let atMapEdge = mapPos.x - floor(COLS/2)
 
     if (movingDown) {
       //this.y += groundUnit.height;
@@ -76,10 +76,10 @@ class Pokebros {
 }
 
 class Towns {
-  constructor(nameString, mapArray) {
+  constructor(nameString, mapTextFile) {
     this.name = nameString;
 
-    this.grid = mapArray;
+    this.grid = mapTextFile;
   }
 
   displayMap() { 
@@ -88,6 +88,7 @@ class Towns {
         fill(this.grid[i][j] * 255);
         stroke(255);
 
+        //replace with images
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
       }
     }

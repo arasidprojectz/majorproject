@@ -61,10 +61,18 @@ let directions = {
 let currentDirections = directions.down;
 
 function preload() {
+  //backgrounds
   introBg = loadImage("assets/introbackground.PNG");
+
+  //character sprites
   prof = [loadImage("assets/professor1.png"), loadImage("assets/professor1.png"), loadImage("assets/professor2.png"), loadImage("assets/professor1.png"), loadImage("assets/professor4.png")]; 
-  introMusic = loadSound("assets/introMusic.mp3"); 
   mainCharacterSprites = [loadImage("assets/frontSprite.png"), loadImage("assets/backSprite.png"), loadImage("assets/rightSprite.png"), loadImage("assets/leftSprite.png")];
+  
+  //music
+  introMusic = loadSound("assets/introMusic.mp3"); 
+
+  //maps
+  lilFlexTownTxt = "maps/lilFlexTown.txt";
 }
 
 function setup() {
@@ -76,8 +84,8 @@ function setup() {
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 + groundUnit.width/2, height/2);
   
   //towns
-  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
-  theRanch = new Towns("The Ranch", theRanchGrid);
+  // lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
+  // theRanch = new Towns("The Ranch", theRanchGrid);
 }
 
 function draw() {
@@ -90,7 +98,7 @@ function draw() {
 }
 
 function playGame() {
-  let maps = [lilFlexTown, theRanch]; //put maps here
+  //let maps = [lilFlexTown, theRanch]; //put maps here
   
   // if (changeState) {
   //   //play music from array
@@ -100,15 +108,11 @@ function playGame() {
   background(220);
 
   if (gameState === 0) {
-    maps[currentTown].displayMap();
+    //maps[currentTown].displayMap();
 
     mainPlayer.display();
     mainPlayer.move();
   }
-
-  console.log(maps);
-  console.log(currentTown);
-  console.log(maps[currentTown].name);
 }
 
 function gameIntro() {
@@ -159,6 +163,9 @@ function pickName() {  // remember to format input box
 
   greeting = createElement('h2', 'What is your name?');
   greeting.position(width/4 + (inputBox.width * 0.8), 4 * (height/5) - 50);
+
+  rect(width/5, 4 * (height/5), 50, 50); // border
+  //fill(51, 255, 255);
 
   textSize(50);
 }

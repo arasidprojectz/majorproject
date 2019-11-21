@@ -17,11 +17,8 @@ canvas {
     display: none;
 }
 
-/*body, html {
-    background-image: url("background.jpg");
-
-    /* Full height 
-    height: 100%
-
-    
-} */
+/*body {
+    background-image: url(background.jpg);
+    height: 100%;
+    width: 100%;
+}*/
