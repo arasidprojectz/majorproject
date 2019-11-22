@@ -22,7 +22,11 @@ class Character {
   }
   
   move() {  //will change
-    //let atMapEdge = mapPos.x - floor(COLS/2)
+    let atRightEdge = mapPos.x + floor(COLS/2) === COLS;
+    let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
+    let atTopEdge = mapPos.y + floor(ROWS/2) === ROWS;
+    let atBottomEdge = mapPos.y - floor(ROWS/2) === 0;
+
 
     if (movingDown) {
       //this.y += groundUnit.height;
@@ -76,20 +80,34 @@ class Pokebros {
 }
 
 class Towns {
-  constructor(nameString, mapTextFile) {
+  constructor(nameString, mapArray) {
     this.name = nameString;
 
-    this.grid = mapTextFile;
+    this.grid = mapArray;
   }
 
   displayMap() { 
-    for (let i = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; i++, xPos++) {
-      for (let j = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; j++, yPos++) {
-        fill(this.grid[i][j] * 255);
-        stroke(255);
+    for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
+      for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
+        // fill(this.grid[i][j] * 255);
+        // stroke(255);
+        // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
 
-        //replace with images
-        rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
+        if (this.grid[i][j] === ".") {
+          imageMode(CORNER);
+          image(grass, xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height)
+        } 
+        else {
+          if (this.grid[i][j] === "#") {
+            fill(230, 158, 110);
+          } 
+          else {
+            fill(0);
+          }
+
+          noStroke();
+          rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
+        }
       }
     }
   }

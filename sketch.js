@@ -11,7 +11,7 @@ let inputBox;
 //states
 let state = 0;
 let gameState = 0;
-let currentTown = 0;
+let currentMap = 0;
 let introTextNum = 0;
 
 //backgrounds
@@ -27,6 +27,8 @@ let mainPlayer;
 
 //sprites
 let prof;
+let mainCharacterSprites;
+let grass;
 
 //buttons
 let aPressed = false;
@@ -38,8 +40,8 @@ let movingDown = false;
 let movingRight = false;
 let movingLeft = false;
 
-const COLS = 20;
-const ROWS = 20;
+const COLS = 21;
+const ROWS = 21;
 
 let mapPos = {
   x: 15,
@@ -68,12 +70,15 @@ function preload() {
   prof = [loadImage("assets/professor1.png"), loadImage("assets/professor1.png"), loadImage("assets/professor2.png"), loadImage("assets/professor1.png"), loadImage("assets/professor4.png")]; 
   mainCharacterSprites = [loadImage("assets/frontSprite.png"), loadImage("assets/backSprite.png"), loadImage("assets/rightSprite.png"), loadImage("assets/leftSprite.png")];
   
+  //map sprites
+  grass = loadImage("assets/grass.png");
+
   //music
   introMusic = loadSound("assets/introMusic.mp3"); 
 
   //maps
-  lilFlexTownTxt = "maps/lilFlexTown.txt";
-  theRanch = "maps/theRanch.txt";
+  lilFlexTownTxt = loadStrings("maps/lilFlexTown.txt");
+  theRanchTxt = loadStrings("maps/theRanch.txt");
 }
 
 function setup() {
@@ -82,11 +87,14 @@ function setup() {
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
 
+  lilFlexTownGrid = make2DArray(lilFlexTownTxt);
+  theRanchGrid = make2DArray(theRanchTxt);
+
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 + groundUnit.width/2, height/2);
   
   //towns
-  // lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
-  // theRanch = new Towns("The Ranch", theRanchGrid);
+  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
+  theRanch = new Towns("The Ranch", theRanchGrid);
 }
 
 function draw() {
@@ -99,7 +107,7 @@ function draw() {
 }
 
 function playGame() {
-  //let maps = [lilFlexTown, theRanch]; //put maps here
+  let maps = [lilFlexTown, theRanch]; //put maps here
   
   // if (changeState) {
   //   //play music from array
@@ -108,8 +116,8 @@ function playGame() {
 
   background(220);
 
-  if (gameState === 0) {
-    //maps[currentTown].displayMap();
+  if (gameState === 0) {  //moving around on map
+    maps[currentMap].displayMap();
 
     mainPlayer.display();
     mainPlayer.move();
@@ -164,11 +172,12 @@ function pickName() {  // remember to format input box
 
   greeting = createElement('h2', 'What is your name?');
   greeting.position(width/4 + (inputBox.width * 0.8), 4 * (height/5) - 50);
-
-  rect(width/5, 4 * (height/5), 50, 50); // border
+  
+  rect(width/5, 4 * (height/5), 20, 20); // border
   //fill(51, 255, 255);
 
   textSize(50);
+  aPressed = false;
 }
 
 function setPlayerName() {
@@ -182,6 +191,19 @@ function setPlayerName() {
   loop(); 
 }
 
+function make2DArray(textFile) {
+  let theArray = [];
+
+  for (let i = 0; i < 31; i++) {
+    theArray.push([]);
+    for (let j = 0; j < 31; j++) {
+      theArray[i].push(textFile[i][j]);
+    }
+  }
+
+  return theArray;
+}
+
 function textBox(theText) {
   fill(255);
   rect(width * 0.01, 3 * (height/4) - height * 0.01, width - width * 0.02, height/4, 20);
@@ -189,4 +211,5 @@ function textBox(theText) {
   fill(0);
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
+  strokeWeight(4);
 }
