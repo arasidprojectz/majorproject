@@ -33,12 +33,33 @@ let grass;
 //buttons
 let aPressed = false;
 let bPressed = false;
+let xPressed = false;
 let inputButton;
 
 let movingUp = false;
 let movingDown = false;
 let movingRight = false;
 let movingLeft = false;
+
+let checkPokebros;
+let checkPlayerCard;
+let checkBag;
+let exit;
+
+let pokeballIcon;
+let bagIcon;
+let cardIcon;
+let exitIcon;
+
+let menuOptions;
+
+let cursor = 0;
+
+let menuHeight;
+let menuWidth;
+let menuXPos;
+let menuYPos;
+let selectionYPos;
 
 const COLS = 21;
 const ROWS = 21;
@@ -79,6 +100,14 @@ function preload() {
   //maps
   lilFlexTownTxt = loadStrings("maps/lilFlexTown.txt");
   theRanchTxt = loadStrings("maps/theRanch.txt");
+
+  //menu things
+  pokeballIcon = loadImage("assets/pokeball.png");
+  bagIcon = loadImage("assets/bag.png");
+  cardIcon = loadImage("assets/card.png");
+  exitIcon = loadImage("assets/exit.png");
+  obamaPic = loadImage("assets/obama.png");
+  trumpPic = loadImage("assets/trump.PNG");
 }
 
 function setup() {
@@ -86,6 +115,12 @@ function setup() {
 
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
+
+  menuHeight = height * 0.9;
+  menuWidth = (width/4);
+  menuXPos = (3 * (width/4)) - 30;
+  menuYPos = height * 0.05;
+  selectionYPos = menuYPos + 60;  
 
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
@@ -95,6 +130,13 @@ function setup() {
   //towns
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
   theRanch = new Towns("The Ranch", theRanchGrid);
+
+  checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
+  checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
+  checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
+  exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
+
+  menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 }
 
 function draw() {
@@ -121,7 +163,19 @@ function playGame() {
 
     mainPlayer.display();
     mainPlayer.move();
+
+    if (xPressed) {
+      openMenu();
+    }
   }
+  else if (gameState === 1) {
+    //battle tings
+    console.log("sfdsfdsfdsfdsfsf");
+  }
+}
+
+function openMenu() {
+
 }
 
 function gameIntro() {

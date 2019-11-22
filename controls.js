@@ -12,6 +12,9 @@ function keyTyped() {
   else if (key === "b") {
     bPressed = true;  
   }
+  else if (key === "x") {
+    xPressed = true;
+  }
 } 
 
 function keyPressed() {

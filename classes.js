@@ -5,6 +5,36 @@
 // 
 // 12/30/1867
 
+class MenuOptions {
+  constructor(someTitle, somePicture, xPos, yPos, widthVal, heightVal) {
+    this.title = someTitle;
+    this.icon = somePicture;
+
+    this.x = xPos;
+    this.y = yPos;
+    
+    this.width = widthVal;
+    this.height = heightVal;
+  }
+
+  display() {
+    textSize(20);
+    noStroke();
+    text(this.title, this.x, this.y, this.width, this.height);
+    image(this.icon, this.x - 30, this.y + 5, 30, 30);
+  }
+
+  highlight() {
+    stroke(255, 0, 0);
+    noFill();
+    rect(this.x - 60, this.y - 20, this.width * 0.9, this.height/2, 10);
+  }
+
+  doTheThing() {
+    console.log("sfdsf");
+  }
+}
+
 class Character {
   constructor(theName, spriteArray, pokebroArray, x, y) {
     this.name = theName;
