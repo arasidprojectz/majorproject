@@ -73,6 +73,7 @@ function preload() {
 
   //maps
   lilFlexTownTxt = "maps/lilFlexTown.txt";
+  theRanch = "maps/theRanch.txt";
 }
 
 function setup() {
