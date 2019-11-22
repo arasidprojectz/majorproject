@@ -106,8 +106,6 @@ function preload() {
   bagIcon = loadImage("assets/bag.png");
   cardIcon = loadImage("assets/card.png");
   exitIcon = loadImage("assets/exit.png");
-  obamaPic = loadImage("assets/obama.png");
-  trumpPic = loadImage("assets/trump.PNG");
 }
 
 function setup() {
