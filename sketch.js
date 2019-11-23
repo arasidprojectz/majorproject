@@ -52,6 +52,7 @@ let cardIcon;
 let exitIcon;
 
 let menuOptions;
+let menuOpen = false;
 
 let cursor = 0;
 
@@ -154,16 +155,22 @@ function playGame() {
     
   // }
 
-  background(220);
+  //background(220);
 
   if (gameState === 0) {  //moving around on map
     maps[currentMap].displayMap();
 
-    mainPlayer.display();
-    mainPlayer.move();
+    if (menuOpen) {
+      //openMenu();
+      console.log("dfgdf");
+    }
+    else {
+      mainPlayer.display();
+      mainPlayer.move();
+    }
 
     if (xPressed) {
-      openMenu();
+      menuOpen = !menuOpen;
     }
   }
   else if (gameState === 1) {
