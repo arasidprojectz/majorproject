@@ -172,9 +172,9 @@ function playGame() {
   }
 }
 
-function openMenu() {
+// function openMenu() {
 
-}
+// }
 
 function gameIntro() {
   let introDialog = ["Welcome to the monde de Bromon!!! (Press spacebar to continue)", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry, but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
@@ -207,7 +207,7 @@ function gameIntro() {
       introMusic.stop();
       changeState = true;
     }
-    else{
+    else {
       introTextNum++;
     }
     aPressed = false;
