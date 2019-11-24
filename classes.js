@@ -120,12 +120,14 @@ class Towns {
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
         // fill(this.grid[i][j] * 255);
-        // stroke(255);
+        stroke(255);
         // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
 
         if (this.grid[i][j] === ".") {
-          imageMode(CORNER);
-          image(grass, xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height)
+          // imageMode(CORNER);
+          // image(grass, xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height)
+          fill(0, 255, 0);
+          rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         } 
         else {
           if (this.grid[i][j] === "#") {
@@ -135,7 +137,7 @@ class Towns {
             fill(0);
           }
 
-          noStroke();
+          //noStroke();
           rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         }
       }

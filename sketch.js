@@ -70,6 +70,11 @@ let mapPos = {
   y: 15
 };
 
+let playerPos = {
+  x: 0,
+  y: 0
+};
+
 let groundUnit = {
   width: 0,
   height: 0
@@ -103,10 +108,10 @@ function preload() {
   theRanchTxt = loadStrings("maps/theRanch.txt");
 
   //menu things
-  pokeballIcon = loadImage("assets/pokeball.png");
-  bagIcon = loadImage("assets/bag.png");
-  cardIcon = loadImage("assets/card.png");
-  exitIcon = loadImage("assets/exit.png");
+  // pokeballIcon = loadImage("assets/pokeball.png");
+  // bagIcon = loadImage("assets/bag.png");
+  // cardIcon = loadImage("assets/card.png");
+  // exitIcon = loadImage("assets/exit.png");
 }
 
 function setup() {
@@ -114,6 +119,9 @@ function setup() {
 
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
+
+  playerPos.x = width/2;
+  playerPos.y = height/2 - groundUnit.height/3;
 
   menuHeight = height * 0.9;
   menuWidth = (width/4);
@@ -124,18 +132,17 @@ function setup() {
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
 
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 + groundUnit.width/2, height/2);
-  
-  //towns
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
   theRanch = new Towns("The Ranch", theRanchGrid);
+  
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], playerPos.x, playerPos.y);
 
-  checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
-  checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
-  checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
-  exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
+  // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
+  // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
+  // checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
+  // exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
 
-  menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
+  // menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 }
 
 function draw() {
@@ -155,22 +162,24 @@ function playGame() {
     
   // }
 
-  //background(220);
+  background(220);
 
   if (gameState === 0) {  //moving around on map
     maps[currentMap].displayMap();
-
+    imageMode(CENTER);
+    mainPlayer.display();
+    
     if (menuOpen) {
       //openMenu();
       console.log("dfgdf");
     }
     else {
-      mainPlayer.display();
       mainPlayer.move();
     }
 
     if (xPressed) {
       menuOpen = !menuOpen;
+      cursor = 0;
     }
   }
   else if (gameState === 1) {
@@ -179,9 +188,9 @@ function playGame() {
   }
 }
 
-// function openMenu() {
-
-// }
+function openMenu() {
+  console.log("menu is open");
+}
 
 function gameIntro() {
   let introDialog = ["Welcome to the monde de Bromon!!! (Press spacebar to continue)", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry, but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
@@ -199,6 +208,7 @@ function gameIntro() {
   if (introTextNum === 2) {
     noLoop(); 
     pickName();
+    aPressed = false;
   }
 
   if (introTextNum === 3) {
@@ -236,7 +246,6 @@ function pickName() {  // remember to format input box
   //fill(51, 255, 255);
 
   textSize(50);
-  aPressed = false;
 }
 
 function setPlayerName() {
