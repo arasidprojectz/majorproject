@@ -56,12 +56,16 @@ class Character {
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
     let atTopEdge = mapPos.y + floor(ROWS/2) === ROWS;
     let atBottomEdge = mapPos.y - floor(ROWS/2) === 0;
-
+    let playerInMiddle = playerPos.x === width/2 && playerPos.y === height/2 - groundUnit.height/3;
 
     if (movingDown) {
-      //this.y += groundUnit.height;
-      mapPos.y++;
-      movingDown = false;
+      if (atBottomEdge || atTopEdge) {
+        this.y += groundUnit.height;
+      }
+      else {
+        mapPos.y++;
+        movingDown = false;
+      }
     }
     else if (movingUp) {
       //this.y -= groundUnit.height;
@@ -120,7 +124,7 @@ class Towns {
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
         // fill(this.grid[i][j] * 255);
-        stroke(255);
+        //stroke(255);
         // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
 
         if (this.grid[i][j] === ".") {
@@ -137,7 +141,7 @@ class Towns {
             fill(0);
           }
 
-          //noStroke();
+          noStroke();
           rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         }
       }
