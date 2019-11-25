@@ -8,10 +8,10 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - NPCs
 - Character dialog/interactions
 - Pokemon sprites
-- Battling/characters and attacks to battle with
+- Battling/character and attacks to battle with
 - Battle system (hitpoints/damage calculation)
 - AI system for battling
-- Catching/battling wild Pokemons
+- Catching(nice to have)/battling wild Pokemons
 - A goal for the player to pursue
 - Level system for Pokemon
 - Ability to enter buildings/interact with the environment
@@ -26,7 +26,7 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - Different cities
 - Variations in Sprites
 - Pokemon Evolution
-- Ability to catch more than a set amount of pokemons/also able to store pokemon in a box
+- Ability to catch multiple pokemons/also able to store pokemon in a box
 - Pokemon league
 - Able to save your progress
 - Intro screen with multiple save files and instructions

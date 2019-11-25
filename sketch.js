@@ -70,11 +70,6 @@ let mapPos = {
   y: 15
 };
 
-let playerPos = {
-  x: 0,
-  y: 0
-};
-
 let groundUnit = {
   width: 0,
   height: 0
@@ -120,9 +115,6 @@ function setup() {
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
 
-  playerPos.x = width/2;
-  playerPos.y = height/2 - groundUnit.height/3;
-
   menuHeight = height * 0.9;
   menuWidth = (width/4);
   menuXPos = (3 * (width/4)) - 30;
@@ -135,13 +127,13 @@ function setup() {
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
   theRanch = new Towns("The Ranch", theRanchGrid);
   
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], playerPos.x, playerPos.y);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3);
 
   // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
   // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
   // checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
   // exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
-
+  
   // menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 }
 
@@ -162,7 +154,7 @@ function playGame() {
     
   // }
 
-  background(220);
+  background(0);
 
   if (gameState === 0) {  //moving around on map
     maps[currentMap].displayMap();

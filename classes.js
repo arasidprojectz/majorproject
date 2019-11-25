@@ -52,14 +52,16 @@ class Character {
   }
   
   move() {  //will change
-    let atRightEdge = mapPos.x + floor(COLS/2) === COLS;
-    let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
-    let atTopEdge = mapPos.y + floor(ROWS/2) === ROWS;
-    let atBottomEdge = mapPos.y - floor(ROWS/2) === 0;
-    let playerInMiddle = playerPos.x === width/2 && playerPos.y === height/2 - groundUnit.height/3;
+    let atRightEdge = round(this.x/groundUnit.width) + floor(COLS/2) >= COLS;
+    let atLeftEdge = round(this.x/groundUnit.width) - floor(COLS/2) <= 0;
+    let atTopEdge = round(this.y/groundUnit.height) + floor(ROWS/2) >= ROWS;
+    let atBottomEdge = round(this.y/groundUnit.height) - floor(ROWS/2) <= 0;
+    let playerInMiddle = this.x === width/2 && this.y === height/2 - groundUnit.height/3;
 
-    if (movingDown) {
-      if (atBottomEdge || atTopEdge) {
+    console.log(atLeftEdge);
+
+    if (movingDown) {  // nah change
+      if (atBottomEdge || atTopEdge && !playerInMiddle) {
         this.y += groundUnit.height;
       }
       else {
@@ -68,19 +70,31 @@ class Character {
       }
     }
     else if (movingUp) {
-      //this.y -= groundUnit.height;
-      mapPos.y--;
-      movingUp = false;
+      if (atTopEdge || atBottomEdge && !playerInMiddle) {
+        this.y -= groundUnit.height;
+      }
+      else {
+        mapPos.y--;
+        movingUp = false;
+      }
     }   
     else if (movingRight) {
-      //this.x += groundUnit.width;
-      mapPos.x++;
-      movingRight = false;
+      if (atRightEdge || atLeftEdge && !playerInMiddle) {
+        this.x += groundUnit.width;
+      }
+      else {
+        mapPos.x++;
+        movingRight = false;
+      }
     }
     else if (movingLeft) {
-      //this.x -= groundUnit.width;
-      mapPos.x--;
-      movingLeft = false;
+      if (atLeftEdge || atRightEdge && !playerInMiddle) {
+        this.x -= groundUnit.width;
+      }  
+      else {
+        mapPos.x--;
+        movingLeft = false;
+      }  
     }    
   }
 }
@@ -123,27 +137,18 @@ class Towns {
   displayMap() { 
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
-        // fill(this.grid[i][j] * 255);
-        //stroke(255);
-        // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height);
-
         if (this.grid[i][j] === ".") {
-          // imageMode(CORNER);
-          // image(grass, xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width, groundUnit.height)
           fill(0, 255, 0);
-          rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
+        } 
+        else if (this.grid[i][j] === "#") {
+          fill(230, 158, 110);
         } 
         else {
-          if (this.grid[i][j] === "#") {
-            fill(230, 158, 110);
-          } 
-          else {
-            fill(0);
-          }
-
-          noStroke();
-          rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
+          fill(0);
         }
+
+        noStroke();
+        rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
       }
     }
   }
