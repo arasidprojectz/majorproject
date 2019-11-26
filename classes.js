@@ -52,49 +52,54 @@ class Character {
   }
   
   move() {  //will change
-    let atRightEdge = round(this.x/groundUnit.width) + floor(COLS/2) >= COLS;
-    let atLeftEdge = round(this.x/groundUnit.width) - floor(COLS/2) <= 0;
-    let atTopEdge = round(this.y/groundUnit.height) + floor(ROWS/2) >= ROWS;
-    let atBottomEdge = round(this.y/groundUnit.height) - floor(ROWS/2) <= 0;
-    let playerInMiddle = this.x === width/2 && this.y === height/2 - groundUnit.height/3;
+    let atRightEdge = mapPos.x + floor(COLS/2) === 30;
+    let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
+    let atTopEdge = mapPos.y - floor(ROWS/2) === 0;
+    let atBottomEdge = mapPos.y + floor(ROWS/2) === 30;
+    let playerXMiddle = this.x == width/2
+    let playerYMiddle = this.y == height/2 - groundUnit.height/3;
 
-    console.log(atLeftEdge);
+    console.log(playerXMiddle);
+    console.log(playerYMiddle);
+    console.log(atBottomEdge);
+    console.log(atTopEdge);
+    console.log(atBottomEdge && !playerYMiddle);
 
     if (movingDown) {  // nah change
-      if (atBottomEdge || atTopEdge && !playerInMiddle) {
+      if (atBottomEdge || atTopEdge && !playerYMiddle) {
         this.y += groundUnit.height;
       }
       else {
         mapPos.y++;
-        movingDown = false;
       }
+      movingDown = false;
     }
     else if (movingUp) {
-      if (atTopEdge || atBottomEdge && !playerInMiddle) {
+      if (atTopEdge || atBottomEdge && !playerYMiddle) {
         this.y -= groundUnit.height;
       }
       else {
         mapPos.y--;
-        movingUp = false;
       }
+      movingUp = false;
     }   
     else if (movingRight) {
-      if (atRightEdge || atLeftEdge && !playerInMiddle) {
+      if (atRightEdge || atLeftEdge && !playerXMiddle) {
         this.x += groundUnit.width;
       }
       else {
         mapPos.x++;
-        movingRight = false;
       }
+      movingRight = false;
     }
     else if (movingLeft) {
-      if (atLeftEdge || atRightEdge && !playerInMiddle) {
+      if (atLeftEdge || atRightEdge && !playerXMiddle) {
         this.x -= groundUnit.width;
       }  
       else {
         mapPos.x--;
-        movingLeft = false;
       }  
+      movingLeft = false;
     }    
   }
 }

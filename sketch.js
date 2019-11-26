@@ -9,7 +9,7 @@
 let inputBox;
 
 //states
-let state = 0;
+let state = 1;
 let gameState = 0;
 let currentMap = 0;
 let introTextNum = 0;
@@ -66,8 +66,8 @@ const COLS = 21;
 const ROWS = 21;
 
 let mapPos = {
-  x: 15,
-  y: 15
+  x: 16,
+  y: 16
 };
 
 let groundUnit = {
