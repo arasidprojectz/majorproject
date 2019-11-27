@@ -30,6 +30,8 @@ let prof;
 let mainCharacterSprites;
 let grass;
 
+let maps = [];
+
 //buttons
 let aPressed = false;
 let bPressed = false;
@@ -126,8 +128,10 @@ function setup() {
 
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
   theRanch = new Towns("The Ranch", theRanchGrid);
+
+  maps = [lilFlexTown, theRanch];
   
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 - 2 * groundUnit.width, height/2 - groundUnit.height/3);
 
   // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
   // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
@@ -147,8 +151,6 @@ function draw() {
 }
 
 function playGame() {
-  let maps = [lilFlexTown, theRanch]; //put maps here
-  
   // if (changeState) {
   //   //play music from array
     
@@ -272,4 +274,8 @@ function textBox(theText) {
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
   strokeWeight(4);
+}
+
+function walkable(xIndex, yIndex, someMap) {
+  return maps[currentMap].grid[xIndex][yIndex] === "#" //|| maps[currentMap].grid[xIndex][yIndex] ===
 }

@@ -59,48 +59,50 @@ class Character {
     let playerXMiddle = this.x == width/2
     let playerYMiddle = this.y == height/2 - groundUnit.height/3;
 
-    console.log(playerXMiddle);
-    console.log(playerYMiddle);
-    console.log(atBottomEdge);
-    console.log(atTopEdge);
-    console.log(atBottomEdge && !playerYMiddle);
-
     if (movingDown) {  // nah change
-      if (atBottomEdge || atTopEdge && !playerYMiddle) {
-        this.y += groundUnit.height;
-      }
-      else {
-        mapPos.y++;
+      if () {
+        if (atBottomEdge || atTopEdge && !playerYMiddle) {
+          this.y += round(groundUnit.height);
+        }
+        else {
+          mapPos.y++;
+        }
       }
       movingDown = false;
     }
     else if (movingUp) {
-      if (atTopEdge || atBottomEdge && !playerYMiddle) {
-        this.y -= groundUnit.height;
-      }
-      else {
-        mapPos.y--;
+      if () {
+        if (atTopEdge || atBottomEdge && !playerYMiddle) {
+          this.y -= round(groundUnit.height);
+        }
+        else {
+          mapPos.y--;
+        }
       }
       movingUp = false;
     }   
     else if (movingRight) {
-      if (atRightEdge || atLeftEdge && !playerXMiddle) {
-        this.x += groundUnit.width;
-      }
-      else {
-        mapPos.x++;
+      if () {
+        if (atRightEdge || atLeftEdge && !playerXMiddle) {
+          this.x += round(groundUnit.width);
+        }
+        else {
+          mapPos.x++;
+        }
       }
       movingRight = false;
     }
     else if (movingLeft) {
-      if (atLeftEdge || atRightEdge && !playerXMiddle) {
-        this.x -= groundUnit.width;
-      }  
-      else {
-        mapPos.x--;
+      if () {
+        if (atLeftEdge || atRightEdge && !playerXMiddle) {
+          this.x -= round(groundUnit.width);
+        }  
+        else {
+          mapPos.x--;
+        }  
       }  
       movingLeft = false;
-    }    
+    }
   }
 }
 
@@ -148,11 +150,14 @@ class Towns {
         else if (this.grid[i][j] === "#") {
           fill(230, 158, 110);
         } 
-        else {
+        else if (this.grid[i][j] === "^") {
+          fill(255);
+        } 
+        else if (this.grid[i][j] === "*") {
           fill(0);
         }
 
-        noStroke();
+        stroke(0);
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
       }
     }
