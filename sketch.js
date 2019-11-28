@@ -131,7 +131,7 @@ function setup() {
 
   maps = [lilFlexTown, theRanch];
   
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2 - 2 * groundUnit.width, height/2 - groundUnit.height/3);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3);
 
   // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
   // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);

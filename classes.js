@@ -51,17 +51,42 @@ class Character {
     image(this.sprite[currentDirections], this.x, this.y, groundUnit.width, groundUnit.width);
   }
   
-  move() {  //will change
-    let atRightEdge = mapPos.x + floor(COLS/2) === 30;
+  move() { 
+    let atRightEdge = mapPos.x + floor(COLS/2) === maps[currentMap].grid.length - 1;
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
     let atTopEdge = mapPos.y - floor(ROWS/2) === 0;
-    let atBottomEdge = mapPos.y + floor(ROWS/2) === 30;
-    let playerXMiddle = this.x == width/2
-    let playerYMiddle = this.y == height/2 - groundUnit.height/3;
+    let atBottomEdge = mapPos.y + floor(ROWS/2) === maps[currentMap].grid.length - 1;
+    let playerInXMiddle = this.x == width/2
+    let playerInYMiddle = this.y == height/2 - groundUnit.height/3;
+    let playerXIndex;
+    let playerYIndex
 
-    if (movingDown) {  // nah change
-      if () {
-        if (atBottomEdge || atTopEdge && !playerYMiddle) {
+    if (atRightEdge) {
+      playerXIndex = (maps[currentMap].grid.length - COLS) + floor(this.x/groundUnit.width);
+    }
+    else if (atLeftEdge) {
+      playerXIndex = floor(this.x/groundUnit.width);
+    }
+    else {
+      playerXIndex = mapPos.x;
+    }
+
+    if (atBottomEdge) {
+      playerYIndex = (maps[currentMap].grid.length - ROWS) + floor(this.y/groundUnit.height);
+    }
+    else if (atTopEdge) {
+      playerYIndex = floor(this.y/groundUnit.height);
+    }
+    else {
+      playerYIndex = mapPos.y;
+    }
+
+    console.log(playerXIndex);
+    console.log(playerYIndex);
+
+    if (movingDown) {  
+      if (walkable(playerXIndex, playerYIndex + 1)) {
+        if (atBottomEdge || atTopEdge && !playerInYMiddle) {
           this.y += round(groundUnit.height);
         }
         else {
@@ -71,8 +96,8 @@ class Character {
       movingDown = false;
     }
     else if (movingUp) {
-      if () {
-        if (atTopEdge || atBottomEdge && !playerYMiddle) {
+      if (walkable(playerXIndex, playerYIndex - 1)) {
+        if (atTopEdge || atBottomEdge && !playerInYMiddle) {
           this.y -= round(groundUnit.height);
         }
         else {
@@ -82,8 +107,8 @@ class Character {
       movingUp = false;
     }   
     else if (movingRight) {
-      if () {
-        if (atRightEdge || atLeftEdge && !playerXMiddle) {
+      if (walkable(playerXIndex + 1, playerYIndex)) {
+        if (atRightEdge || atLeftEdge && !playerInXMiddle) {
           this.x += round(groundUnit.width);
         }
         else {
@@ -93,8 +118,8 @@ class Character {
       movingRight = false;
     }
     else if (movingLeft) {
-      if () {
-        if (atLeftEdge || atRightEdge && !playerXMiddle) {
+      if (walkable(playerXIndex - 1, playerYIndex)) {
+        if (atLeftEdge || atRightEdge && !playerInXMiddle) {
           this.x -= round(groundUnit.width);
         }  
         else {
