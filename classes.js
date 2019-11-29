@@ -56,10 +56,10 @@ class Character {
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
     let atTopEdge = mapPos.y - floor(ROWS/2) === 0;
     let atBottomEdge = mapPos.y + floor(ROWS/2) === maps[currentMap].grid.length - 1;
-    let playerInXMiddle = this.x == width/2
-    let playerInYMiddle = this.y == height/2 - groundUnit.height/3;
+    let playerInXMiddle = this.x === width/2
+    let playerInYMiddle = this.y === height/2 - groundUnit.height/2.9;
     let playerXIndex;
-    let playerYIndex
+    let playerYIndex;
 
     if (atRightEdge) {
       playerXIndex = (maps[currentMap].grid.length - COLS) + floor(this.x/groundUnit.width);
@@ -81,51 +81,56 @@ class Character {
       playerYIndex = mapPos.y;
     }
 
-    console.log(playerXIndex);
-    console.log(playerYIndex);
-
     if (movingDown) {  
-      if (walkable(playerXIndex, playerYIndex + 1)) {
-        if (atBottomEdge || atTopEdge && !playerInYMiddle) {
-          this.y += round(groundUnit.height);
-        }
-        else {
-          mapPos.y++;
+      if (playerYIndex < maps[currentMap].grid.length - 1) {
+        if (walkable(playerXIndex, playerYIndex + 1)) {
+          if (atBottomEdge || atTopEdge && !playerInYMiddle) {
+            this.y += groundUnit.height;
+          }
+          else {
+            mapPos.y++;
+          }
         }
       }
       movingDown = false;
     }
     else if (movingUp) {
-      if (walkable(playerXIndex, playerYIndex - 1)) {
-        if (atTopEdge || atBottomEdge && !playerInYMiddle) {
-          this.y -= round(groundUnit.height);
-        }
-        else {
-          mapPos.y--;
+      if (playerYIndex > 0) {
+        if (walkable(playerXIndex, playerYIndex - 1)) {
+          if (atTopEdge || atBottomEdge && !playerInYMiddle) {
+            this.y -= groundUnit.height;
+          }
+          else {
+            mapPos.y--;
+          }
         }
       }
       movingUp = false;
     }   
     else if (movingRight) {
-      if (walkable(playerXIndex + 1, playerYIndex)) {
-        if (atRightEdge || atLeftEdge && !playerInXMiddle) {
-          this.x += round(groundUnit.width);
-        }
-        else {
-          mapPos.x++;
+      if (playerXIndex < maps[currentMap].grid.length - 1) {
+        if (walkable(playerXIndex + 1, playerYIndex)) {
+          if (atRightEdge || atLeftEdge && !playerInXMiddle) {
+            this.x += groundUnit.width;
+          }
+          else {
+            mapPos.x++;
+          }
         }
       }
       movingRight = false;
     }
     else if (movingLeft) {
-      if (walkable(playerXIndex - 1, playerYIndex)) {
-        if (atLeftEdge || atRightEdge && !playerInXMiddle) {
-          this.x -= round(groundUnit.width);
+      if (playerXIndex > 0) {
+        if (walkable(playerXIndex - 1, playerYIndex)) {
+          if (atLeftEdge || atRightEdge && !playerInXMiddle) {
+            this.x -= groundUnit.width;
+          }  
+          else {
+            mapPos.x--;
+          }  
         }  
-        else {
-          mapPos.x--;
-        }  
-      }  
+      }
       movingLeft = false;
     }
   }
@@ -182,7 +187,7 @@ class Towns {
           fill(0);
         }
 
-        stroke(0);
+        noStroke();
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
       }
     }

@@ -68,7 +68,7 @@ const COLS = 21;
 const ROWS = 21;
 
 let mapPos = {
-  x: 16,
+  x: 14,
   y: 16
 };
 
@@ -131,7 +131,7 @@ function setup() {
 
   maps = [lilFlexTown, theRanch];
   
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/2.9);
 
   // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
   // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
@@ -276,6 +276,6 @@ function textBox(theText) {
   strokeWeight(4);
 }
 
-function walkable(xIndex, yIndex, someMap) {
-  return maps[currentMap].grid[xIndex][yIndex] === "#" //|| maps[currentMap].grid[xIndex][yIndex] ===
+function walkable(xIndex, yIndex) {
+  return maps[currentMap].grid[yIndex][xIndex] === "#";
 }
