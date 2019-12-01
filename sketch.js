@@ -105,10 +105,10 @@ function preload() {
   theRanchTxt = loadStrings("maps/theRanch.txt");
 
   //menu things
-  // pokeballIcon = loadImage("assets/pokeball.png");
-  // bagIcon = loadImage("assets/bag.png");
-  // cardIcon = loadImage("assets/card.png");
-  // exitIcon = loadImage("assets/exit.png");
+  pokeballIcon = loadImage("assets/pokeball.png");
+  bagIcon = loadImage("assets/bag.png");
+  cardIcon = loadImage("assets/card.png");
+  exitIcon = loadImage("assets/exit.png");
 }
 
 function setup() {
@@ -133,12 +133,12 @@ function setup() {
   
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/2.9);
 
-  // checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
-  // checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
-  // checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
-  // exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
+  checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
+  checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
+  checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
+  exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
   
-  // menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
+  menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 }
 
 function draw() {
@@ -164,8 +164,7 @@ function playGame() {
     mainPlayer.display();
     
     if (menuOpen) {
-      //openMenu();
-      console.log("dfgdf");
+      openMenu();
     }
     else {
       mainPlayer.move();
@@ -183,7 +182,27 @@ function playGame() {
 }
 
 function openMenu() {
-  console.log("menu is open");
+  stroke(210);
+  rect(menuXPos, menuYPos, menuWidth, menuHeight, 10);
+  stroke(0, 200, 255); 
+  strokeWeight(5);
+  fill(255);
+  rect(menuXPos + 2, menuYPos + 2, menuWidth - 4, menuHeight - 4, 10);
+  
+  fill(0);
+  for (let i = 0; i < menuOptions.length; i++) {
+    menuOptions[i].display();  
+  }
+  
+  //cursor limitations
+  if (cursor > 3) {
+    cursor = 3;
+  }
+  else if (cursor < 0) {
+    cursor = 0;
+  }
+  
+  menuOptions[cursor].highlight();  
 }
 
 function gameIntro() {

@@ -6,7 +6,7 @@
 // 12/30/1867
 
 class MenuOptions {
-  constructor(someTitle, somePicture, xPos, yPos, widthVal, heightVal) {
+  constructor(someTitle, somePicture, xPos, yPos, widthVal, heightVal, someFunction) {
     this.title = someTitle;
     this.icon = somePicture;
 
@@ -31,7 +31,7 @@ class MenuOptions {
   }
 
   doTheThing() {
-    console.log("sfdsf");
+    someFunction();
   }
 }
 
