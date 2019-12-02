@@ -56,7 +56,7 @@ class Character {
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
     let atTopEdge = mapPos.y - floor(ROWS/2) === 0;
     let atBottomEdge = mapPos.y + floor(ROWS/2) === maps[currentMap].grid.length - 1;
-    let playerInXMiddle = this.x === width/2
+    let playerInXMiddle = this.x === width/2;
     let playerInYMiddle = this.y === height/2 - groundUnit.height/2.9;
     let playerXIndex;
     let playerYIndex;
@@ -121,6 +121,11 @@ class Character {
       movingRight = false;
     }
     else if (movingLeft) {
+      console.log("x middle")
+      console.log(playerInXMiddle);
+      console.log(this.x);
+      console.log(width/2);
+      console.log(groundUnit.width);
       if (playerXIndex > 0) {
         if (walkable(playerXIndex - 1, playerYIndex)) {
           if (atLeftEdge || atRightEdge && !playerInXMiddle) {

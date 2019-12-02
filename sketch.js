@@ -173,6 +173,7 @@ function playGame() {
     if (xPressed) {
       menuOpen = !menuOpen;
       cursor = 0;
+      xPressed = false;
     }
   }
   else if (gameState === 1) {
@@ -196,13 +197,18 @@ function openMenu() {
   
   //cursor limitations
   if (cursor > 3) {
-    cursor = 3;
-  }
-  else if (cursor < 0) {
     cursor = 0;
   }
+  else if (cursor < 0) {
+    cursor = 3;
+  }
   
-  menuOptions[cursor].highlight();  
+  menuOptions[cursor].highlight(); 
+
+  if (aPressed) {
+    menuOptions[cursor].doTheThing();
+    aPressed = false;
+  }
 }
 
 function gameIntro() {
@@ -267,7 +273,7 @@ function setPlayerName() {
   inputBox.remove();
   inputButton.remove();
   greeting.remove();
-  
+    
   introTextNum++;
   loop(); 
 }
