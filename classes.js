@@ -121,11 +121,6 @@ class Character {
       movingRight = false;
     }
     else if (movingLeft) {
-      console.log("x middle")
-      console.log(playerInXMiddle);
-      console.log(this.x);
-      console.log(width/2);
-      console.log(groundUnit.width);
       if (playerXIndex > 0) {
         if (walkable(playerXIndex - 1, playerYIndex)) {
           if (atLeftEdge || atRightEdge && !playerInXMiddle) {
