@@ -164,17 +164,19 @@ class Pokebros {
   }
 }
 
-class Towns {
+class Area {
   constructor(nameString, mapArray) {
     this.name = nameString;
 
     this.grid = mapArray;
+
+    this.buildingEntrances
   }
 
   displayMap() { 
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
-        if (this.grid[i][j] === ".") {
+        if (this.grid[i][j] === ".") {   // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
           fill(0, 255, 0);
         } 
         else if (this.grid[i][j] === "#") {
@@ -191,5 +193,13 @@ class Towns {
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
       }
     }
+  }
+}
+
+class Buildings {  //make subclass for houses, centers, marts
+  constructor(entranceXindex, entranceYindex, mapArray) {
+    this.entrance = {x: entranceXindex, y:entranceYindex};
+
+    this.array
   }
 }

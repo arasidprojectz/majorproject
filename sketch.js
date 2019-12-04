@@ -31,6 +31,7 @@ let mainCharacterSprites;
 let grass;
 
 let maps = [];
+let newMap = false;
 
 //buttons
 let aPressed = false;
@@ -53,7 +54,7 @@ let bagIcon;
 let cardIcon;
 let exitIcon;
 
-let menuOptions;
+let mainMenuOptions;
 let menuOpen = false;
 
 let cursor = 0;
@@ -126,8 +127,8 @@ function setup() {
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
 
-  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
-  theRanch = new Towns("The Ranch", theRanchGrid);
+  lilFlexTown = new Area("Lil Flex Town", lilFlexTownGrid);
+  theRanch = new Area("The Ranch", theRanchGrid);
 
   maps = [lilFlexTown, theRanch];
   
@@ -138,7 +139,7 @@ function setup() {
   checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4);
   exit = new MenuOptions("Exit", exitIcon, menuXPos + 70, selectionYPos + 3 * (menuHeight/4), menuWidth, menuHeight/4);
   
-  menuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
+  mainMenuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 }
 
 function draw() {
@@ -154,6 +155,9 @@ function playGame() {
   // if (changeState) {
   //   //play music from array
     
+  // }
+  // if (newMap) {
+
   // }
 
   background(0);
@@ -191,8 +195,8 @@ function openMenu() {
   rect(menuXPos + 2, menuYPos + 2, menuWidth - 4, menuHeight - 4, 10);
   
   fill(0);
-  for (let i = 0; i < menuOptions.length; i++) {
-    menuOptions[i].display();  
+  for (let i = 0; i < mainMenuOptions.length; i++) {
+    mainMenuOptions[i].display();  
   }
   
   //cursor limitations
@@ -203,10 +207,10 @@ function openMenu() {
     cursor = 3;
   }
   
-  menuOptions[cursor].highlight(); 
+  mainMenuOptions[cursor].highlight(); 
 
   if (aPressed) {
-    menuOptions[cursor].doTheThing();
+    mainMenuOptions[cursor].doTheThing();
     aPressed = false;
   }
 }
