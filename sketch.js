@@ -24,6 +24,10 @@ let changeState = true;
 
 //characters
 let mainPlayer;  
+let mainPlayerIndex = {
+  x: 0,
+  y: 0
+};
 
 //sprites
 let prof;
@@ -32,6 +36,7 @@ let grass;
 
 let maps = [];
 let newMap = false;
+let insideBuilding = false;
 
 //buttons
 let aPressed = false;
@@ -127,8 +132,8 @@ function setup() {
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
 
-  lilFlexTown = new Area("Lil Flex Town", lilFlexTownGrid);
-  theRanch = new Area("The Ranch", theRanchGrid);
+  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
+  theRanch = new Towns("The Ranch", theRanchGrid);
 
   maps = [lilFlexTown, theRanch];
   
@@ -152,20 +157,22 @@ function draw() {
 }
 
 function playGame() {
-  // if (changeState) {
-  //   //play music from array
-    
-  // }
-  // if (newMap) {
-
-  // }
-
   background(0);
 
-  if (gameState === 0) {  //moving around on map
-    maps[currentMap].displayMap();
-    imageMode(CENTER);
-    mainPlayer.display();
+  // if (newMap || changeState) {
+  //   maps[currentMap].playMusic();
+  // }
+
+  if (gameState === 0) {  //moving around on a map
+    if (insideBuilding) {
+      //determineBuilding(mainPlayerIndex.x, mainPlayerIndex.y).displayMap();
+      textBox("ur in a building");
+    }
+    else {
+      maps[currentMap].displayMap();
+      imageMode(CENTER);
+      mainPlayer.display();
+    }
     
     if (menuOpen) {
       openMenu();
@@ -285,9 +292,9 @@ function setPlayerName() {
 function make2DArray(textFile) {
   let theArray = [];
 
-  for (let i = 0; i < 31; i++) {
+  for (let i = 0; i < textFile.length; i++) {
     theArray.push([]);
-    for (let j = 0; j < 31; j++) {
+    for (let j = 0; j < textFile.length; j++) {
       theArray[i].push(textFile[i][j]);
     }
   }
@@ -307,4 +314,27 @@ function textBox(theText) {
 
 function walkable(xIndex, yIndex) {
   return maps[currentMap].grid[yIndex][xIndex] === "#";
+}
+
+function determineBuilding(xIndex, yIndex) {
+  // if (maps[currentMap] === lilFlexTown) {
+  //   if 
+  // }
+
+  return "sfdsf";
+}
+
+function tileColor(tileString) {  // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
+  if (tileString === "#") {
+    return "F4A460"
+  }
+  // else if (tileString === ".") {
+  //   return ""
+  // }
+  // else if (tileString === "*") {
+  //   return ""
+  // }
+  // else if (tileString === "^") {
+  //   return ""
+  // }
 }
