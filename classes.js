@@ -85,58 +85,63 @@ class Character {
     mainPlayerIndex.y = playerYIndex;
 
     if (movingDown) {  
-      if (playerYIndex < maps[currentMap].grid.length - 1) {
-        if (walkable(playerXIndex, playerYIndex + 1)) {
-          if (atBottomEdge || atTopEdge && !playerInYMiddle) {
-            this.y += round(groundUnit.height);
+      if (playerYIndex === maps[currentMap].grid.length - 1) {
+        if (insideBuilding) {
+          if (playerXIndex === round(determineBuilding(mainPlayerIndex.x, mainPlayerIndex.y).grid.length)) {
+            insideBuilding = false;
           }
-          else {
-            mapPos.y++;
-          }
+        }
+        else {
+          currentMap--;
+        }
+      }
+      else if (walkable(playerXIndex, playerYIndex + 1)) {
+        if (atBottomEdge || atTopEdge && !playerInYMiddle) {
+          this.y += round(groundUnit.height);
+        }
+        else {
+          mapPos.y++;
         }
       }
       movingDown = false;
     }
     else if (movingUp) {
-      if (playerYIndex > 0) {
-        if (walkable(playerXIndex, playerYIndex - 1)) {
-          if (atTopEdge || atBottomEdge && !playerInYMiddle) {
-            this.y -= round(groundUnit.height);
-          }
-          else {
-            mapPos.y--;
-          }
+      if (playerYIndex === 0 && !insideBuilding) {
+        currentMap++;
+      }
+      else if (walkable(playerXIndex, playerYIndex - 1)) {
+        if (atTopEdge || atBottomEdge && !playerInYMiddle) {
+          this.y -= round(groundUnit.height);
         }
-        else if (maps[currentMap].grid[playerYIndex - 1][playerXIndex] === "^") {
-          insideBuilding = true;
+        else {
+          mapPos.y--;
         }
+      }
+      else if (maps[currentMap].grid[playerYIndex - 1][playerXIndex] === "^") {
+        insideBuilding = true;
       }
       movingUp = false;
     }   
     else if (movingRight) {
-      if (playerXIndex < maps[currentMap].grid.length - 1) {
-        if (walkable(playerXIndex + 1, playerYIndex)) {
-          if (atRightEdge || atLeftEdge && !playerInXMiddle) {
-            this.x += round(groundUnit.width);
-          }
-          else {
-            mapPos.x++;
-          }
+      if (walkable(playerXIndex + 1, playerYIndex)) {
+        if (atRightEdge || atLeftEdge && !playerInXMiddle) {
+          this.x += round(groundUnit.width);
+        }
+        else {
+          mapPos.x++;
         }
       }
       movingRight = false;
     }
     else if (movingLeft) {
-      if (playerXIndex > 0) {
-        if (walkable(playerXIndex - 1, playerYIndex)) {
-          if (atLeftEdge || atRightEdge && !playerInXMiddle) {
-            this.x -= round(groundUnit.width);
-          }  
-          else {
-            mapPos.x--;
-          }  
+      if (walkable(playerXIndex - 1, playerYIndex)) {
+        if (atLeftEdge || atRightEdge && !playerInXMiddle) {
+          this.x -= round(groundUnit.width);
         }  
-      }
+        else {
+          mapPos.x--;
+        }  
+      }  
       movingLeft = false;
     }
   }
