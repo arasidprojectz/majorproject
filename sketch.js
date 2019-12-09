@@ -29,6 +29,11 @@ let mainPlayerIndex = {
   y: 0
 };
 
+let previousPlayerPos = {
+  x: 0,
+  y: 0
+};
+
 //sprites
 let prof;
 let mainCharacterSprites;
@@ -78,6 +83,11 @@ const ROWS = 21;
 let mapPos = {
   x: 14,
   y: 16
+};
+
+let previousMapPos = {
+  x: 0,
+  y: 0
 };
 
 let groundUnit = {
@@ -176,8 +186,8 @@ function playGame() {
     else {
       maps[currentMap].displayMap();
       imageMode(CENTER);
-      mainPlayer.display();
     }
+    mainPlayer.display();
     
     if (menuOpen) {
       openMenu();
@@ -323,7 +333,12 @@ function textBox(theText) {
 }
 
 function walkable(xIndex, yIndex) {
-  return maps[currentMap].grid[yIndex][xIndex] === "#" || maps[currentMap].grid[yIndex][xIndex] === "$" || maps[currentMap].grid[yIndex][xIndex] === ".";
+  if (insideBuilding) {
+    return currentBuilding.grid[yIndex][xIndex] === "#" || currentBuilding.grid[yIndex][xIndex] === "$";
+  }
+  else {
+    return maps[currentMap].grid[yIndex][xIndex] === "#" || maps[currentMap].grid[yIndex][xIndex] === "$";
+  }
 }
 
 function determineBuilding(xIndex, yIndex) {

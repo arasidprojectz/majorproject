@@ -47,45 +47,61 @@ class Character {
     image(this.sprite[currentDirections], this.x, this.y, groundUnit.width, groundUnit.width);
   }
   
-  move() { 
-    let atRightEdge = mapPos.x + floor(COLS/2) === maps[currentMap].grid.length - 1;
+  move() {
+    let atRightEdge;
+    let atBottomEdge;
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
     let atTopEdge = mapPos.y - floor(ROWS/2) === 0;
-    let atBottomEdge = mapPos.y + floor(ROWS/2) === maps[currentMap].grid.length - 1;
     let playerInXMiddle = this.x === width/2;
     let playerInYMiddle = this.y === height/2 - groundUnit.height/2.9;
     let playerXIndex;
-    let playerYIndex;
+    let playerYIndex; 
 
-    if (atRightEdge) {
-      playerXIndex = (maps[currentMap].grid.length - COLS) + floor(this.x/groundUnit.width);
-    }
-    else if (atLeftEdge) {
-      playerXIndex = floor(this.x/groundUnit.width);
-    }
-    else {
-      playerXIndex = mapPos.x;
-    }
+    if (insideBuilding) {
+      atRightEdge = mapPos.x + floor(COLS/2) === currentBuilding.grid.length - 1;  
+      atBottomEdge = mapPos.y + floor(ROWS/2) === currentBuilding.grid.length - 1;
 
-    if (atBottomEdge) {
-      playerYIndex = (maps[currentMap].grid.length - ROWS) + floor(this.y/groundUnit.height);
-    }
-    else if (atTopEdge) {
+      playerXIndex = floor(this.x/groundUnit.width);      
       playerYIndex = floor(this.y/groundUnit.height);
     }
     else {
-      playerYIndex = mapPos.y;
+      atRightEdge = mapPos.x + floor(COLS/2) === maps[currentMap].grid.length - 1;
+      atBottomEdge = mapPos.y + floor(ROWS/2) === maps[currentMap].grid.length - 1;
+
+      if (atRightEdge) {
+        playerXIndex = (maps[currentMap].grid.length - COLS) + floor(this.x/groundUnit.width);
+      }
+      else if (atLeftEdge) {
+        playerXIndex = floor(this.x/groundUnit.width);
+      }
+      else {
+        playerXIndex = mapPos.x;
+      }
+  
+      if (atBottomEdge) {
+        playerYIndex = (maps[currentMap].grid.length - ROWS) + floor(this.y/groundUnit.height);
+      }
+      else if (atTopEdge) {
+        playerYIndex = floor(this.y/groundUnit.height);
+      }
+      else {
+        playerYIndex = mapPos.y;
+      }
     }
 
     mainPlayerIndex.x = playerXIndex;
     mainPlayerIndex.y = playerYIndex;
 
     if (movingDown) {  
-      if (playerYIndex === maps[currentMap].grid.length - 1) {
+      if (playerYIndex === ROWS - 1) {
         if (insideBuilding) {
-          if (playerXIndex === round(currentBuilding.grid.length/2)) {
+          if (playerXIndex === round(currentBuilding.grid.length/2) - 1) {
             insideBuilding = false;
-            //need to change positionings
+            
+            mapPos.x = previousMapPos.x;
+            mapPos.y = previousMapPos.y;
+            this.x = previousPlayerPos.x;
+            this.y = previousPlayerPos.y;
           }
         }
         else {
@@ -123,8 +139,16 @@ class Character {
       else if (maps[currentMap].grid[playerYIndex - 1][playerXIndex] === "^") {
         insideBuilding = true;
         currentBuilding = determineBuilding(playerXIndex, playerYIndex);
-        mapPos.x = 11;
-        mapPos.y = 11;
+
+        previousMapPos.x = mapPos.x;
+        previousMapPos.y = mapPos.y;
+        previousPlayerPos.x = this.x;
+        previousPlayerPos.y = this.y;
+
+        mapPos.x = floor(COLS/2);
+        mapPos.y = floor(ROWS/2);
+        this.x = width/2;
+        this.y = (height/2 - groundUnit.height/2.9) + round(groundUnit.height) * floor(ROWS/2);
       }
       movingUp = false;
     }   
@@ -201,9 +225,7 @@ class Towns {
 }
 
 class Buildings {  //make subclass for houses, centers, marts
-  constructor(entranceXindex, entranceYindex, mapArray) {
-    this.entrance = {x: entranceXindex, y:entranceYindex};  // entrance position on the town map
-
+  constructor(mapArray) {
     this.array = mapArray;
   }
 
