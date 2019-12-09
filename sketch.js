@@ -36,6 +36,8 @@ let grass;
 
 let maps = [];
 let newMap = false;
+
+let currentBuilding;
 let insideBuilding = false;
 
 //buttons
@@ -107,8 +109,9 @@ function preload() {
   introMusic = loadSound("assets/introMusic.mp3"); 
 
   //maps
-  lilFlexTownTxt = loadStrings("maps/lilFlexTown.txt");
-  theRanchTxt = loadStrings("maps/theRanch.txt");
+  lilFlexTownTxt = loadStrings("maps/towns/lilFlexTown.txt");
+  theRanchTxt = loadStrings("maps/towns/theRanch.txt");
+  playerHouseTxt = loadStrings("maps/buildings/playerHouse.txt");
 
   //menu things
   pokeballIcon = loadImage("assets/pokeball.png");
@@ -131,11 +134,14 @@ function setup() {
 
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
+  playerHouseGrid = make2DArray(playerHouseTxt);
 
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
   theRanch = new Towns("The Ranch", theRanchGrid);
 
   maps = [lilFlexTown, theRanch];
+
+  playerHouse = new Towns("Player's House", playerHouseGrid);  //buildings class here
   
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/2.9);
 
@@ -165,8 +171,7 @@ function playGame() {
 
   if (gameState === 0) {  //moving around on a map
     if (insideBuilding) {
-      //determineBuilding(mainPlayerIndex.x, mainPlayerIndex.y).displayMap();
-      textBox("ur in a building");
+      currentBuilding.displayMap();
     }
     else {
       maps[currentMap].displayMap();
@@ -179,6 +184,10 @@ function playGame() {
     }
     else {
       mainPlayer.move();
+    }
+
+    if (aPressed && !menuOpen) {
+      //talking
     }
 
     if (xPressed) {
@@ -217,7 +226,7 @@ function openMenu() {
   mainMenuOptions[cursor].highlight(); 
 
   if (aPressed) {
-    mainMenuOptions[cursor].doTheThing();
+    //mainMenuOptions[cursor].doTheThing();
     aPressed = false;
   }
 }
@@ -314,28 +323,33 @@ function textBox(theText) {
 }
 
 function walkable(xIndex, yIndex) {
-  return maps[currentMap].grid[yIndex][xIndex] === "#";
+  return maps[currentMap].grid[yIndex][xIndex] === "#" || maps[currentMap].grid[yIndex][xIndex] === "$" || maps[currentMap].grid[yIndex][xIndex] === ".";
 }
 
 function determineBuilding(xIndex, yIndex) {
-  // if (maps[currentMap] === lilFlexTown) {
-  //   if 
-  // }
-
-  return "sfdsf";
+  if (maps[currentMap] === lilFlexTown) {
+    if (xIndex === 6 && yIndex === 14) {
+      return playerHouse;
+    }
+  }
 }
 
 function tileColor(tileString) {  // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
   if (tileString === "#") {
-    return "F4A460"
+    if (insideBuilding) {
+      return "#FFFAF0";
+    } 
+    else {
+      return "#F4A460"
+    }
   }
-  // else if (tileString === ".") {
-  //   return ""
-  // }
-  // else if (tileString === "*") {
-  //   return ""
-  // }
-  // else if (tileString === "^") {
-  //   return ""
-  // }
+  else if (tileString === ".") {
+    return "#00FF00";
+  }
+  else if (tileString === "*") {
+    return "#000000";
+  }
+  else if (tileString === "^") {
+    return "#FFFFFF"
+  }
 }

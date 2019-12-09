@@ -29,10 +29,6 @@ class MenuOptions {
     noFill();
     rect(this.x - 60, this.y - 20, this.width * 0.9, this.height/2, 10);
   }
-
-  doTheThing() {
-    someFunction();
-  }
 }
 
 class Character {
@@ -87,12 +83,15 @@ class Character {
     if (movingDown) {  
       if (playerYIndex === maps[currentMap].grid.length - 1) {
         if (insideBuilding) {
-          if (playerXIndex === round(determineBuilding(mainPlayerIndex.x, mainPlayerIndex.y).grid.length)) {
+          if (playerXIndex === round(currentBuilding.grid.length/2)) {
             insideBuilding = false;
+            //need to change positionings
           }
         }
         else {
           currentMap--;
+          this.y -= round(groundUnit.height) * (ROWS - 1);
+          mapPos.y = floor(ROWS/2);
         }
       }
       else if (walkable(playerXIndex, playerYIndex + 1)) {
@@ -107,7 +106,11 @@ class Character {
     }
     else if (movingUp) {
       if (playerYIndex === 0 && !insideBuilding) {
-        currentMap++;
+        if (currentMap < maps.length - 1) {
+          currentMap++;
+          this.y += round(groundUnit.height) * (ROWS - 1);
+          mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
+        }
       }
       else if (walkable(playerXIndex, playerYIndex - 1)) {
         if (atTopEdge || atBottomEdge && !playerInYMiddle) {
@@ -119,6 +122,9 @@ class Character {
       }
       else if (maps[currentMap].grid[playerYIndex - 1][playerXIndex] === "^") {
         insideBuilding = true;
+        currentBuilding = determineBuilding(playerXIndex, playerYIndex);
+        mapPos.x = 11;
+        mapPos.y = 11;
       }
       movingUp = false;
     }   
@@ -180,25 +186,12 @@ class Towns {
     this.name = nameString;
 
     this.grid = mapArray;
-
-    //this.buildingEntrances = 
   }
 
   displayMap() { 
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
-        if (this.grid[i][j] === ".") {
-          fill(0, 255, 0);
-        } 
-        else if (this.grid[i][j] === "#") {
-          fill(230, 158, 110);
-        } 
-        else if (this.grid[i][j] === "^") {
-          fill(255);
-        } 
-        else if (this.grid[i][j] === "*") {
-          fill(0);
-        }
+        fill(tileColor(this.grid[i][j]));
 
         noStroke();
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
@@ -209,7 +202,7 @@ class Towns {
 
 class Buildings {  //make subclass for houses, centers, marts
   constructor(entranceXindex, entranceYindex, mapArray) {
-    this.entrance = {x: entranceXindex, y:entranceYindex};
+    this.entrance = {x: entranceXindex, y:entranceYindex};  // entrance position on the town map
 
     this.array = mapArray;
   }
