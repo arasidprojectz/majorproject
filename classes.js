@@ -93,7 +93,7 @@ class Character {
     mainPlayerIndex.y = playerYIndex;
 
     if (movingDown) {  
-      if (playerYIndex === ROWS - 1) {
+      if (this.y === (height/2 - groundUnit.height/2.9) + round(groundUnit.height) * floor(ROWS/2)) {
         if (insideBuilding) {
           if (playerXIndex === round(currentBuilding.grid.length/2) - 1) {
             insideBuilding = false;
@@ -217,7 +217,7 @@ class Towns {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
         fill(tileColor(this.grid[i][j]));
 
-        noStroke();
+        stroke(0);
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
       }
     }
@@ -231,3 +231,4 @@ class Buildings {  //make subclass for houses, centers, marts
 
 
 }
+
