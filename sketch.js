@@ -350,7 +350,7 @@ function determineBuilding(xIndex, yIndex) {
 }
 
 function tileColor(tileString) {  // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
-  if (tileString === "#") {
+  if (tileString === "#" || tileString === "@") {
     if (insideBuilding) {
       return "#FFFAF0";
     } 
@@ -367,4 +367,8 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
   else if (tileString === "^") {
     return "#FFFFFF"
   }
+}
+
+function facingPerson(xIndex, yIndex) {
+
 }
