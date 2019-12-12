@@ -217,19 +217,29 @@ class Towns {
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
         fill(tileColor(this.grid[i][j]));
-
         stroke(0);
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
+
+        // if (this.grid[i][j] === "@") {
+          
+        // }
       }
     }
   }
 }
 
-class Buildings {  //make subclass for houses, centers, marts
-  constructor(mapArray) {
-    this.array = mapArray;
+class NPC {  
+  constructor(nameString, pokebroArray, dialogArray, xPos, yPos, sprite) {
+    this.name = nameString;
+    this.pokebros = pokebroArray;
+    this.dialog = dialogArray;
+
+    this.x = xPos;
+    this.y = yPos;
+
+    this.sprite = sprite;
   }
 
-
+  
 }
 

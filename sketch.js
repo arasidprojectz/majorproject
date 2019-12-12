@@ -176,9 +176,11 @@ function playGame() {
 
     console.log(facingPerson);
 
-    if (aPressed && !menuOpen) {
-      //talking
-    }
+    // if (aPressed && !menuOpen) {
+    //   if (facingPerson) {
+
+    //   }
+    // }
 
     if (xPressed) {
       menuOpen = !menuOpen;

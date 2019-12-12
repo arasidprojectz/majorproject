@@ -28,7 +28,16 @@ function keyPressed() {
           movingDown = true;
         }
         currentDirections = directions.down;
-        facingPerson = maps[currentMap].grid[mainPlayerIndex.y + 1][mainPlayerIndex.x] === "@";
+        if (insideBuilding) {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
+            facingPerson = currentBuilding.grid[mainPlayerIndex.y + 1][mainPlayerIndex.x] === "@";
+          }
+        }
+        else {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== maps[currentMap].grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== maps[currentMap].grid.length) {
+            facingPerson = maps[currentMap].grid[mainPlayerIndex.y + 1][mainPlayerIndex.x] === "@";
+          }
+        }
       }
     }
   } 
@@ -42,7 +51,16 @@ function keyPressed() {
           movingUp = true;
         }
         currentDirections = directions.up;
-        facingPerson = maps[currentMap].grid[mainPlayerIndex.y - 1][mainPlayerIndex.x] === "@";
+        if (insideBuilding) {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
+            facingPerson = currentBuilding.grid[mainPlayerIndex.y - 1][mainPlayerIndex.x] === "@";
+          }
+        }
+        else {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== maps[currentMap].grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== maps[currentMap].grid.length) {
+            facingPerson = maps[currentMap].grid[mainPlayerIndex.y - 1][mainPlayerIndex.x] === "@";
+          }
+        }
       }
     }
   }
@@ -53,8 +71,17 @@ function keyPressed() {
           movingRight = true;
         }
         currentDirections = directions.right;
-        facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x + 1] === "@";
-      }
+        if (insideBuilding) {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
+            facingPerson = currentBuilding.grid[mainPlayerIndex.y][mainPlayerIndex.x + 1] === "@";
+          }
+        }
+        else {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== maps[currentMap].grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== maps[currentMap].grid.length) {
+            facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x + 1] === "@";
+          }
+        }
+      }      
     }
   }
   else if (keyCode === LEFT_ARROW) {
@@ -64,7 +91,16 @@ function keyPressed() {
           movingLeft = true;
         }
         currentDirections = directions.left;
-        facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x - 1] === "@";
+        if (insideBuilding) {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
+            facingPerson = currentBuilding.grid[mainPlayerIndex.y][mainPlayerIndex.x - 1] === "@";
+          }
+        }
+        else {
+          if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== maps[currentMap].grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== maps[currentMap].grid.length) {
+            facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x - 1] === "@";
+          }
+        }
       }
     }
   }
