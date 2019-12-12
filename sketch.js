@@ -30,6 +30,11 @@ let previousPlayerPos = {
   y: 0
 };
 
+let mainPlayerIndex = {
+  x: 0,
+  y: 0
+};
+
 let facingPerson = false;
 
 //sprites
@@ -168,6 +173,8 @@ function playGame() {
     else {
       mainPlayer.move();
     }
+
+    console.log(facingPerson);
 
     if (aPressed && !menuOpen) {
       //talking
@@ -352,3 +359,11 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
     return "#FFFFFF"
   }
 }
+
+// function determineNPC(xIndex, yIndex) {
+//   if (maps[currentMap] === lilFlexTown) {
+//     if (xIndex === 1 && yIndex === 13) {
+
+//     }
+//   }
+// }

@@ -28,6 +28,7 @@ function keyPressed() {
           movingDown = true;
         }
         currentDirections = directions.down;
+        facingPerson = maps[currentMap].grid[mainPlayerIndex.y + 1][mainPlayerIndex.x] === "@";
       }
     }
   } 
@@ -41,6 +42,7 @@ function keyPressed() {
           movingUp = true;
         }
         currentDirections = directions.up;
+        facingPerson = maps[currentMap].grid[mainPlayerIndex.y - 1][mainPlayerIndex.x] === "@";
       }
     }
   }
@@ -51,6 +53,7 @@ function keyPressed() {
           movingRight = true;
         }
         currentDirections = directions.right;
+        facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x + 1] === "@";
       }
     }
   }
@@ -61,6 +64,7 @@ function keyPressed() {
           movingLeft = true;
         }
         currentDirections = directions.left;
+        facingPerson = maps[currentMap].grid[mainPlayerIndex.y][mainPlayerIndex.x - 1] === "@";
       }
     }
   }

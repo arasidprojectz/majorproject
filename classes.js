@@ -90,10 +90,13 @@ class Character {
       }
     }
 
+    mainPlayerIndex.x = playerXIndex;
+    mainPlayerIndex.y = playerYIndex;
+
     if (movingDown) {  
       if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1) {
         if (insideBuilding) {
-          if (playerXIndex === round(currentBuilding.grid.length/2) - 1) {
+          if (playerXIndex === floor(currentBuilding.grid.length/2)) { 
             insideBuilding = false;
             
             mapPos.x = previousMapPos.x;
@@ -118,7 +121,7 @@ class Character {
       }
       movingDown = false;
     }
-    else if (movingUp) {
+    else if (movingUp) {  
       if (playerYIndex === 0 && !insideBuilding) {
         if (currentMap < maps.length - 1) {
           currentMap++;
@@ -150,7 +153,7 @@ class Character {
       }
       movingUp = false;
     }   
-    else if (movingRight) {
+    else if (movingRight) {  
       if (walkable(playerXIndex + 1, playerYIndex)) {
         if (atRightEdge || atLeftEdge && !playerInXMiddle) {
           this.x += groundUnit.width;
@@ -161,7 +164,7 @@ class Character {
       }
       movingRight = false;
     }
-    else if (movingLeft) {
+    else if (movingLeft) {  
       if (walkable(playerXIndex - 1, playerYIndex)) {
         if (atLeftEdge || atRightEdge && !playerInXMiddle) {
           this.x -= groundUnit.width;
