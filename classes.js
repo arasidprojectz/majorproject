@@ -179,9 +179,9 @@ class Character {
 }
 
 class Pokebros {
-  constructor(nameString, aType, attackInt, defenseInt, speedInt, catchRateInt, spawnRateInt, movesetArray) {
+  constructor(nameString, type, attackInt, defenseInt, speedInt, catchRateInt, spawnRateInt, movesetArray) {
     this.name = nameString;
-    this.type = aType;
+    this.type = type;
 
     this.attack = attackInt;
     this.defense = defenseInt;
@@ -207,10 +207,11 @@ class Pokebros {
 }
 
 class Towns {
-  constructor(nameString, mapArray) {
+  constructor(nameString, mapArray, characterArray) {
     this.name = nameString;
 
     this.grid = mapArray;
+    this.players = characterArray;
   }
 
   displayMap() { 
@@ -220,26 +221,28 @@ class Towns {
         stroke(0);
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
 
-        // if (this.grid[i][j] === "@") {
-          
-        // }
+        if (this.grid[i][j] === "@") {
+          for (let x = 0; x < this.players.length; x++) {
+            if (this.player[x].xIndex === i &)
+          }
+        }
       }
     }
   }
 }
 
 class NPC {  
-  constructor(nameString, pokebroArray, dialogArray, xPos, yPos, sprite) {
+  constructor(nameString, pokebroArray, dialogArray, xIndex, yIndex, sprite) {
     this.name = nameString;
     this.pokebros = pokebroArray;
     this.dialog = dialogArray;
 
-    this.x = xPos;
-    this.y = yPos;
+    this.xIndex = xIndex;
+    this.yIndex = yIndex;
 
     this.sprite = sprite;
   }
 
-  
+
 }
 

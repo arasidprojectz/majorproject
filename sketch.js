@@ -43,7 +43,7 @@ let mainCharacterSprites;
 let grass;
 
 let maps = [];
-let newMap = false;
+let newMap = true;
 
 let currentBuilding;
 let insideBuilding = false;
@@ -136,7 +136,7 @@ function setup() {
 
   maps = [lilFlexTown, theRanch];
 
-  playerHouse = new Towns("Player's House", playerHouseGrid);  //buildings class here
+  playerHouse = new Towns("Player's House", playerHouseGrid);  
   
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1);
 }
@@ -153,9 +153,9 @@ function draw() {
 function playGame() {
   background(0); 
 
-  // if (newMap || changeState) {
-  //   maps[currentMap].playMusic();
-  // }
+  if (newMap || changeState) {
+    //maps[currentMap].playMusic();
+  }
 
   if (gameState === 0) {  //moving around on a map
     if (insideBuilding) {
@@ -166,6 +166,7 @@ function playGame() {
       imageMode(CENTER);
     }
     mainPlayer.display();
+
     
     if (menuOpen) {
       openMenu();

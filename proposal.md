@@ -39,3 +39,4 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - HTML/CSS formatting
 - Pokemon abilities
 - Attack animations
+- pokemon stats/types
