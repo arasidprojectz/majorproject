@@ -221,9 +221,9 @@ class Towns {
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
 
         if (this.grid[i][j] === "@") {
-          //determineNPC(i, j).display(xPos * groundUnit.width, yPos * groundUnit.height);
-          fill(0);
-          rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
+          determineNPC(i, j).display(xPos * groundUnit.width, yPos * groundUnit.height);
+          // fill(0);
+          // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         }
       }
     }
@@ -231,10 +231,9 @@ class Towns {
 }
 
 class NPC {  
-  constructor(nameString, pokebroArray, dialogArray, xIndex, yIndex, sprite) {
+  constructor(nameString, pokebroArray, xIndex, yIndex, sprite) {
     this.name = nameString;
     this.pokebros = pokebroArray;
-    this.dialog = dialogArray;
 
     this.xIndex = xIndex;
     this.yIndex = yIndex;
@@ -243,10 +242,22 @@ class NPC {
   }
 
   display(xPos, yPos) {
-    image(this.sprite, xPos, yPos, groundUnit.width, groundUnit.width);
+    image(this.sprite, xPos + groundUnit.width/2, yPos + groundUnit.height/6, groundUnit.width, groundUnit.width);
   }
 
   talk() {
+    let dialogArray = returnDialog(this.name);
+    let dialogCounter = 0;
     
+    while (dialogCounter < dialogArray.length) {
+      console.log(dialogArray[dialogCounter]);
+      //textBox(dialogArray[dialogCounter]);
+
+      if (aPressed) {
+        console.log("Pressed A")
+        dialogCounter++;
+        aPressed = false;
+      }
+    }
   }
 }

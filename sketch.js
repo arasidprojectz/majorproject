@@ -25,6 +25,8 @@ let changeState = true;
 //characters
 let mainPlayer;  
 
+let firstTownGuy;
+
 let previousPlayerPos = {
   x: 0,
   y: 0
@@ -127,6 +129,7 @@ function setup() {
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
 
+  //town stuff
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
   playerHouseGrid = make2DArray(playerHouseTxt);
@@ -136,9 +139,14 @@ function setup() {
 
   maps = [lilFlexTown, theRanch];
 
+  //buildings
   playerHouse = new Towns("Player's House", playerHouseGrid);  
   
+  //main character
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1);
+
+  //NPC
+  firstTownGuy = new NPC("Joe", [], 13, 1, loadImage("assets/frontSprite.png"));
 }
 
 function draw() {
@@ -177,11 +185,13 @@ function playGame() {
 
     console.log(facingPerson);
 
-    // if (aPressed && !menuOpen) {
-    //   if (facingPerson) {
-
-    //   }
-    // }
+    if (aPressed && !menuOpen) {
+      if (facingPerson) {
+        console.log("yes u press");
+        determineNPC(mainPlayerIndex.y, mainPlayerIndex.x).talk();
+      }
+      aPressed = false;
+    }
 
     if (xPressed) {
       menuOpen = !menuOpen;
@@ -267,6 +277,7 @@ function gameIntro() {
       state++;
       introMusic.stop();
       changeState = true;
+      createNPC();
     }
     else {
       introTextNum++;
@@ -365,8 +376,19 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
 
 function determineNPC(xIndex, yIndex) {
   if (maps[currentMap] === lilFlexTown) {
-    if (xIndex === 1 && yIndex === 13) {
+    if (xIndex === 1 && yIndex === 13 || xIndex === 0 && yIndex === 13 || xIndex === 1 && yIndex === 14 || xIndex === 2 && yIndex === 13) {
+      return firstTownGuy;
+    }
+  }
+}
 
+function returnDialog(character) {
+  if (character === "Joe") {
+    if (mainPlayer.pokebro.length > 0) {
+      return ["Yo dawg, you new trainer right?", "That's cool bruh!", "Anyways enjoy your journey with your new pokebro!"];
+    }
+    else {
+      return ["Yo bruv!!!", "Where do you think you're going with no pokebro!", "Go to the professor's lab at the south end of town and get yourself a pokebro!"];
     }
   }
 }
