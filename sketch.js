@@ -363,10 +363,10 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
   }
 }
 
-// function determineNPC(xIndex, yIndex) {
-//   if (maps[currentMap] === lilFlexTown) {
-//     if (xIndex === 1 && yIndex === 13) {
+function determineNPC(xIndex, yIndex) {
+  if (maps[currentMap] === lilFlexTown) {
+    if (xIndex === 1 && yIndex === 13) {
 
-//     }
-//   }
-// }
+    }
+  }
+}

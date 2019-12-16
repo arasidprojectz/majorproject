@@ -207,11 +207,10 @@ class Pokebros {
 }
 
 class Towns {
-  constructor(nameString, mapArray, characterArray) {
+  constructor(nameString, mapArray) {
     this.name = nameString;
 
     this.grid = mapArray;
-    this.characters = characterArray;
   }
 
   displayMap() { 
@@ -222,11 +221,7 @@ class Towns {
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
 
         if (this.grid[i][j] === "@") {
-          // for (let x = 0; x < this.characters.length; x++) {
-          //   if (this.characters[x].xIndex === i && this.characters[x].yIndex === j) {
-          //     this.characters.display(xPos * groundUnit.width, yPos * groundUnit.height);
-          //   }
-          // }
+          //determineNPC(i, j).display(xPos * groundUnit.width, yPos * groundUnit.height);
           fill(0);
           rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         }
@@ -249,5 +244,9 @@ class NPC {
 
   display(xPos, yPos) {
     image(this.sprite, xPos, yPos, groundUnit.width, groundUnit.width);
+  }
+
+  talk() {
+    
   }
 }
