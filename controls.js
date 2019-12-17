@@ -19,7 +19,7 @@ function keyTyped() {
 
 function keyPressed() {
   if (keyCode === DOWN_ARROW) {
-    if (gameState === 0) {
+    if (gameState === 0 && !talking) {
       if (menuOpen) {
         cursor++;
       }
@@ -42,7 +42,7 @@ function keyPressed() {
     }
   } 
   else if (keyCode === UP_ARROW) {
-    if (gameState === 0) {
+    if (gameState === 0 && !talking) {
       if (menuOpen) {
         cursor--;
       }
@@ -65,7 +65,7 @@ function keyPressed() {
     }
   }
   else if (keyCode === RIGHT_ARROW) {
-    if (gameState === 0) {
+    if (gameState === 0 && !talking) {
       if (!menuOpen) {
         if (currentDirections === directions.right) {
           movingRight = true;
@@ -85,7 +85,7 @@ function keyPressed() {
     }
   }
   else if (keyCode === LEFT_ARROW) {
-    if (gameState === 0) {
+    if (gameState === 0 && !talking) {
       if (!menuOpen) {
         if (currentDirections === directions.left) {
           movingLeft = true;

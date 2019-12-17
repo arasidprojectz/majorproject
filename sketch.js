@@ -12,7 +12,7 @@ let inputBox;
 let state = 1;
 let gameState = 0;
 let currentMap = 0;
-let introTextNum = 0;
+let textNum = 0;
 
 //backgrounds
 let introBg;
@@ -38,6 +38,7 @@ let mainPlayerIndex = {
 };
 
 let facingPerson = false;
+let talking = false;
 
 //sprites
 let prof;
@@ -49,6 +50,7 @@ let newMap = true;
 
 let currentBuilding;
 let insideBuilding = false;
+let canLeaveTown = false;
 
 //buttons
 let aPressed = false;
@@ -166,34 +168,27 @@ function playGame() {
   }
 
   if (gameState === 0) {  //moving around on a map
-    if (insideBuilding) {
-      currentBuilding.displayMap();
-    }
-    else {
-      maps[currentMap].displayMap();
-      imageMode(CENTER);
-    }
+    showMap();
     mainPlayer.display();
 
-    
     if (menuOpen) {
       openMenu();
+    }
+    else if (talking) {
+      determineNPC(mainPlayerIndex.y, mainPlayerIndex.x).talk();
     }
     else {
       mainPlayer.move();
     }
 
-    console.log(facingPerson);
-
     if (aPressed && !menuOpen) {
       if (facingPerson) {
-        console.log("yes u press");
-        determineNPC(mainPlayerIndex.y, mainPlayerIndex.x).talk();
+        talking = true;
       }
       aPressed = false;
     }
 
-    if (xPressed) {
+    if (xPressed && !talking) {
       menuOpen = !menuOpen;
       cursor = 0;
       xPressed = false;
@@ -202,6 +197,16 @@ function playGame() {
   else if (gameState === 1) {
     //battle tings
     console.log("sfdsfdsfdsfdsfsf");
+  }
+}
+
+function showMap() {
+  if (insideBuilding) {
+    currentBuilding.displayMap();
+  }
+  else {
+    maps[currentMap].displayMap();
+    imageMode(CENTER);
   }
 }
 
@@ -258,29 +263,30 @@ function gameIntro() {
   imageMode(CORNER);
   background(introBg);
   imageMode(CENTER);
-  image(prof[introTextNum], width/2, height/2, width/4, 5 * (height/8));
+  image(prof[textNum], width/2, height/2, width/4, 5 * (height/8));
   
-  if (introTextNum === 2) {
+  if (textNum === 2) {
     noLoop(); 
     pickName();
   }
 
-  if (introTextNum === 3) {
+  if (textNum === 3) {
     textBox("Ah, yes, hello " + mainPlayer.name + "!");
   }
   else {
-    textBox(introDialog[introTextNum]);
+    textBox(introDialog[textNum]);
   }
 
   if (aPressed) {
-    if (introTextNum === 4) {
+    if (textNum === 4) {
       state++;
       introMusic.stop();
       changeState = true;
       createNPC();
+      textNum = 0;
     }
     else {
-      introTextNum++;
+      textNum++;
     }
     aPressed = false;
   }
@@ -310,7 +316,7 @@ function setPlayerName() {
   inputButton.remove();
   greeting.remove();
     
-  introTextNum++;
+  textNum++;
   loop(); 
 }
 
@@ -334,7 +340,6 @@ function textBox(theText) {
   fill(0);
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
-  strokeWeight(4);
 }
 
 function walkable(xIndex, yIndex) {
@@ -376,7 +381,7 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
 
 function determineNPC(xIndex, yIndex) {
   if (maps[currentMap] === lilFlexTown) {
-    if (xIndex === 1 && yIndex === 13 || xIndex === 0 && yIndex === 13 || xIndex === 1 && yIndex === 14 || xIndex === 2 && yIndex === 13) {
+    if (xIndex === 0 && yIndex === 13 || xIndex === 0 && yIndex === 14 || xIndex === 1 && yIndex === 13) {
       return firstTownGuy;
     }
   }
@@ -384,7 +389,7 @@ function determineNPC(xIndex, yIndex) {
 
 function returnDialog(character) {
   if (character === "Joe") {
-    if (mainPlayer.pokebro.length > 0) {
+    if (canLeaveTown) {
       return ["Yo dawg, you new trainer right?", "That's cool bruh!", "Anyways enjoy your journey with your new pokebro!"];
     }
     else {

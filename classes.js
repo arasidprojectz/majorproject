@@ -124,9 +124,15 @@ class Character {
     else if (movingUp) {  
       if (playerYIndex === 0 && !insideBuilding) {
         if (currentMap < maps.length - 1) {
-          currentMap++;
-          this.y += groundUnit.height * (ROWS - 1);
-          mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
+          if (canLeaveTown) {
+            currentMap++;
+            this.y += groundUnit.height * (ROWS - 1);
+            mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
+          }
+          else {
+            talking = true;
+            currentDirections = directions.left;
+          }
         }
       }
       else if (walkable(playerXIndex, playerYIndex - 1)) {
@@ -217,13 +223,11 @@ class Towns {
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
         fill(tileColor(this.grid[i][j]));
-        stroke(0);
+        noStroke();
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
 
         if (this.grid[i][j] === "@") {
           determineNPC(i, j).display(xPos * groundUnit.width, yPos * groundUnit.height);
-          // fill(0);
-          // rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
         }
       }
     }
@@ -247,17 +251,17 @@ class NPC {
 
   talk() {
     let dialogArray = returnDialog(this.name);
-    let dialogCounter = 0;
     
-    while (dialogCounter < dialogArray.length) {
-      console.log(dialogArray[dialogCounter]);
-      //textBox(dialogArray[dialogCounter]);
+    textBox(dialogArray[textNum]);
 
-      if (aPressed) {
-        console.log("Pressed A")
-        dialogCounter++;
-        aPressed = false;
-      }
+    if (aPressed) {
+      textNum++;
+      aPressed = false;
+    }
+
+    if (textNum === dialogArray.length) {
+      talking = false;
+      textNum = 0;
     }
   }
 }
