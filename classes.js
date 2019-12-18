@@ -109,6 +109,7 @@ class Character {
           currentMap--;
           this.y -= groundUnit.height * (ROWS - 1);
           mapPos.y = floor(ROWS/2);
+          newMap = true;
         }
       }
       else if (walkable(playerXIndex, playerYIndex + 1)) {
@@ -124,10 +125,11 @@ class Character {
     else if (movingUp) {  
       if (playerYIndex === 0 && !insideBuilding) {
         if (currentMap < maps.length - 1) {
-          if (canLeaveTown) {
+          if (canLeaveTown(maps[currentMap])) {
             currentMap++;
             this.y += groundUnit.height * (ROWS - 1);
             mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
+            newMap = true;
           }
           else {
             talking = true;

@@ -50,7 +50,6 @@ let newMap = true;
 
 let currentBuilding;
 let insideBuilding = false;
-let canLeaveTown = false;
 
 //buttons
 let aPressed = false;
@@ -136,7 +135,7 @@ function setup() {
   theRanchGrid = make2DArray(theRanchTxt);
   playerHouseGrid = make2DArray(playerHouseTxt);
 
-  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);
+  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);  //just use the text files bruh
   theRanch = new Towns("The Ranch", theRanchGrid);
 
   maps = [lilFlexTown, theRanch];
@@ -149,6 +148,7 @@ function setup() {
 
   //NPC
   firstTownGuy = new NPC("Joe", [], 13, 1, loadImage("assets/frontSprite.png"));
+  leMom = new NPC("Mother", [], 5, 2, loadImage("assets/frontSprite.png"));
 }
 
 function draw() {
@@ -165,6 +165,7 @@ function playGame() {
 
   if (newMap || changeState) {
     //maps[currentMap].playMusic();
+
   }
 
   if (gameState === 0) {  //moving around on a map
@@ -335,8 +336,11 @@ function make2DArray(textFile) {
 
 function textBox(theText) {
   fill(255);
+  stroke(0);
+  strokeWeight(5);
   rect(width * 0.01, 3 * (height/4) - height * 0.01, width - width * 0.02, height/4, 20);
-  
+
+  noStroke();
   fill(0);
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
@@ -344,7 +348,7 @@ function textBox(theText) {
 
 function walkable(xIndex, yIndex) {
   if (insideBuilding) {
-    return currentBuilding.grid[yIndex][xIndex] === "#" || currentBuilding.grid[yIndex][xIndex] === "$";
+    return currentBuilding.grid[yIndex][xIndex] === "#" || currentBuilding.grid[yIndex][xIndex] === "=";
   }
   else {
     return maps[currentMap].grid[yIndex][xIndex] === "#" || maps[currentMap].grid[yIndex][xIndex] === "$";
@@ -377,23 +381,51 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
   else if (tileString === "^") {
     return "#FFFFFF"
   }
+  else if (tileString === "=") {
+    return "#B22222"
+  }
 }
 
 function determineNPC(xIndex, yIndex) {
   if (maps[currentMap] === lilFlexTown) {
-    if (xIndex === 0 && yIndex === 13 || xIndex === 0 && yIndex === 14 || xIndex === 1 && yIndex === 13) {
-      return firstTownGuy;
+    if (insideBuilding) {
+      if (currentBuilding === playerHouse) {
+        return leMom;
+      }
+      // else {
+      //   return prof;
+      // }
+    }
+    else {
+      if (xIndex === 0 && yIndex === 13 || xIndex === 0 && yIndex === 14 || xIndex === 1 && yIndex === 13) {
+        return firstTownGuy;
+      }
     }
   }
+  // else if (maps[currentMap === theRanch]) {
+
+  // }
 }
 
-function returnDialog(character) {
-  if (character === "Joe") {
-    if (canLeaveTown) {
+function returnDialog(name) {
+  if (name === "Joe") {
+    if (canLeaveTown(maps[currentMap])) {
       return ["Yo dawg, you new trainer right?", "That's cool bruh!", "Anyways enjoy your journey with your new pokebro!"];
     }
     else {
       return ["Yo bruv!!!", "Where do you think you're going with no pokebro!", "Go to the professor's lab at the south end of town and get yourself a pokebro!"];
     }
   }
+  else if (name === "Mother") {
+    return ["Boi watchu still doin in this house?", "Get yourself a pokebro and get out of here!!!"];
+  }
+}
+
+function canLeaveTown(theTown) {
+  if (theTown === lilFlexTown) {
+    return mainPlayer.pokebro.length > 0;
+  }
+  // else if (theTown === theRanch) {
+
+  // }
 }
