@@ -106,10 +106,12 @@ class Character {
           }
         }
         else {
-          currentMap--;
-          this.y -= groundUnit.height * (ROWS - 1);
-          mapPos.y = floor(ROWS/2);
-          newMap = true;
+          if (gameState === 0) {
+            currentMap--;
+            this.y -= groundUnit.height * (ROWS - 1);
+            mapPos.y = floor(ROWS/2);
+            newMap = true;
+          }
         }
       }
       else if (walkable(playerXIndex, playerYIndex + 1)) {
@@ -125,15 +127,17 @@ class Character {
     else if (movingUp) {  
       if (playerYIndex === 0 && !insideBuilding) {
         if (currentMap < maps.length - 1) {
-          if (canLeaveTown(maps[currentMap])) {
-            currentMap++;
-            this.y += groundUnit.height * (ROWS - 1);
-            mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
-            newMap = true;
-          }
-          else {
-            talking = true;
-            currentDirections = directions.left;
+          if (gameState === 0) {
+            if (canLeaveTown(maps[currentMap])) {
+              currentMap++;
+              this.y += groundUnit.height * (ROWS - 1);
+              mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
+              newMap = true;
+            }
+            else {
+              talking = true;
+              currentDirections = directions.left;
+            }
           }
         }
       }
@@ -161,8 +165,18 @@ class Character {
       }
       movingUp = false;
     }   
-    else if (movingRight) {  
-      if (walkable(playerXIndex + 1, playerYIndex)) {
+    else if (movingRight) { 
+      if (playerXIndex === maps[currentMap].length - 1 && !insideBuilding) {
+        if (gameState === 0) {
+          gameState = 1;
+        }
+        else if (gameState === 1) {
+          gameState = 0;
+        }
+        this.x -= groundUnit.width * (COLS - 1);
+        mapPos.x = floor(COLS/2);
+      } 
+      else if (walkable(playerXIndex + 1, playerYIndex)) {
         if (atRightEdge || atLeftEdge && !playerInXMiddle) {
           this.x += groundUnit.width;
         }
@@ -172,8 +186,18 @@ class Character {
       }
       movingRight = false;
     }
-    else if (movingLeft) {  
-      if (walkable(playerXIndex - 1, playerYIndex)) {
+    else if (movingLeft) { 
+      if (playerXIndex === 0 && !insideBuilding) {
+        if (gameState === 0) {
+          gameState = 1;
+        }
+        else if (gameState === 1) {
+          gameState = 0;
+        }
+        mapPos.x = maps[currentMap].grid.length - round(COLS/2)
+        this.x += groundUnit.width * (COLS - 1);
+      } 
+      else if (walkable(playerXIndex - 1, playerYIndex)) {
         if (atLeftEdge || atRightEdge && !playerInXMiddle) {
           this.x -= groundUnit.width;
         }  

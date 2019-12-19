@@ -163,12 +163,27 @@ function draw() {
 function playGame() {
   background(0); 
 
-  if (newMap || changeState) {
-    //maps[currentMap].playMusic();
+  // if (newMap || changeState) {
+  //   if (gameState === 0) {
+  //     maps[currentMap].playMusic();
+  //   }
+  //   else if (gameState === 1) {
+  //     music
+  //     //wildMap = createPerlin2DArray();
+  //   }
+  //   else if (gameState === 2) {
+  //     battletheme based off dude fightingtinhtkht
+  //   }
+  //   newMap = false;
+  //   changeState = false;
+  // }
 
-  }
+  if (gameState === 0) {  //moving around on regular map
+    if (newMap || changeState) {
+      maps[currentMap].playMusic();
+      newMap = false;
+    }
 
-  if (gameState === 0) {  //moving around on a map
     showMap();
     mainPlayer.display();
 
@@ -195,9 +210,17 @@ function playGame() {
       xPressed = false;
     }
   }
-  else if (gameState === 1) {
-    //battle tings
-    console.log("sfdsfdsfdsfdsfsf");
+  else if (gameState === 1) {  //moving in map with grass
+    let wildMap; 
+
+    if (newMap || changeState) {
+      
+    }
+    
+
+  }
+  else if (gameState === 2) {
+    //battle
   }
 }
 
@@ -366,7 +389,7 @@ function determineBuilding(xIndex, yIndex) {
 function tileColor(tileString) {  // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
   if (tileString === "#" || tileString === "@") {
     if (insideBuilding) {
-      return "#FFFAF0";
+      return "#DEB887";
     } 
     else {
       return "#F4A460"
