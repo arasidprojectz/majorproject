@@ -239,7 +239,7 @@ function openMenu() {
   let menuWidth = (width/4);
   let menuXPos = (3 * (width/4)) - 30;
   let menuYPos = height * 0.05;
-  let selectionYPos = menuYPos + 60;  
+  let selectionYPos = menuYPos + 60;
 
   let checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4);
   let checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4);
