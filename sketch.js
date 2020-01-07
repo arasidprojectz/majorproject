@@ -23,7 +23,7 @@ let introMusic;
 let changeState = true;
 
 //characters
-let mainPlayer;  
+let mainPlayer;
 
 let firstTownGuy;
 
