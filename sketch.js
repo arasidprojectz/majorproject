@@ -141,7 +141,7 @@ function setup() {
   maps = [lilFlexTown, theRanch];
 
   //buildings
-  playerHouse = new Towns("Player's House", playerHouseGrid);  
+  playerHouse = new Towns("Player's House", playerHouseGrid);
   
   //main character
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1);
@@ -250,7 +250,7 @@ function openMenu() {
 
   stroke(210);
   rect(menuXPos, menuYPos, menuWidth, menuHeight, 10);
-  stroke(0, 200, 255); 
+  stroke(0, 200, 255);
   strokeWeight(5);
   fill(255);
   rect(menuXPos + 2, menuYPos + 2, menuWidth - 4, menuHeight - 4, 10);
