@@ -9,7 +9,7 @@
 let inputBox;
 
 //states
-let state = 1;
+let state = 0;
 let gameState = 0;
 let currentMap = 0;
 let textNum = 0;
@@ -180,7 +180,7 @@ function playGame() {
 
   if (gameState === 0) {  //moving around on regular map
     if (newMap || changeState) {
-      maps[currentMap].playMusic();
+      //maps[currentMap].playMusic();
       newMap = false;
     }
 
@@ -210,18 +210,18 @@ function playGame() {
       xPressed = false;
     }
   }
-  else if (gameState === 1) {  //moving in map with grass
-    let wildMap; 
+  // else if (gameState === 1) {  //moving in map with grass
+  //   let wildMap; 
 
-    if (newMap || changeState) {
+  //   if (newMap || changeState) {
       
-    }
+  //   }
     
 
-  }
-  else if (gameState === 2) {
-    //battle
-  }
+  // }
+  // else if (gameState === 2) {
+  //   //battle
+  // }
 }
 
 function showMap() {
@@ -306,7 +306,7 @@ function gameIntro() {
       state++;
       introMusic.stop();
       changeState = true;
-      createNPC();
+      // createNPC();
       textNum = 0;
     }
     else {
@@ -446,6 +446,7 @@ function returnDialog(name) {
 
 function canLeaveTown(theTown) {
   if (theTown === lilFlexTown) {
+    //return true;
     return mainPlayer.pokebro.length > 0;
   }
   // else if (theTown === theRanch) {
