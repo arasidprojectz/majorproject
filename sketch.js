@@ -116,6 +116,7 @@ function preload() {
   lilFlexTownTxt = loadStrings("maps/towns/lilFlexTown.txt");
   theRanchTxt = loadStrings("maps/towns/theRanch.txt");
   playerHouseTxt = loadStrings("maps/buildings/playerHouse.txt");
+  labTxt = loadStrings("maps/buildings/lab.txt");
 
   //menu things
   pokeballIcon = loadImage("assets/pokeball.png");
@@ -134,6 +135,7 @@ function setup() {
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
   playerHouseGrid = make2DArray(playerHouseTxt);
+  labGrid = make2DArray(labTxt);
 
   lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);  //just use the text files bruh
   theRanch = new Towns("The Ranch", theRanchGrid);
@@ -162,21 +164,6 @@ function draw() {
 
 function playGame() {
   background(0); 
-
-  // if (newMap || changeState) {
-  //   if (gameState === 0) {
-  //     maps[currentMap].playMusic();
-  //   }
-  //   else if (gameState === 1) {
-  //     music
-  //     //wildMap = createPerlin2DArray();
-  //   }
-  //   else if (gameState === 2) {
-  //     battletheme based off dude fightingtinhtkht
-  //   }
-  //   newMap = false;
-  //   changeState = false;
-  // }
 
   if (gameState === 0) {  //moving around on regular map
     if (newMap || changeState) {
@@ -453,3 +440,4 @@ function canLeaveTown(theTown) {
 
   // }
 }
+
