@@ -53,8 +53,8 @@ let maps = [];
 let newMap = true;
 let inZone = false;
 
-let currentBuilding = playerHouse;
-let insideBuilding = true;
+let currentBuilding;
+let insideBuilding = false;
 
 //buttons
 let aPressed = false;
@@ -80,10 +80,11 @@ const COLS = 21;
 const ROWS = 21;
 
 let leCash = 500;
+let badges = 0;
 
 let mapPos = {
-  x: 11,
-  y: 11
+  x: 14,
+  y: 16
 };
 
 let previousMapPos = {
@@ -106,7 +107,7 @@ let directions = {
 let currentDirections = directions.down;
 
 // states for the different options in battle 
-let state = "menu"
+let state = "menu";
 let bromon;
 let pokeName;
 
@@ -152,8 +153,8 @@ function preload() {
   exitIcon = loadImage("assets/exit.png");
 
   // //load sprites  i commented these out cuz loading take to long
-  bulbBack = loadImage('assets/bulbasaur_back.png');
-  bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
+  // bulbBack = loadImage('assets/bulbasaur_back.png');
+  // bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
   
   // zamaFront = loadImage('assets/zamazenta_front.png'); // zamazenta
 
@@ -163,11 +164,11 @@ function preload() {
 
   // zubFront = loadImage('assets/zubat_front.png'); // zubat
 
-  fenBack = loadImage('assets/fennekin_back.png'); // fennekin
-  fenFront = loadImage('assets/fennekin_front.png');
+  // fenBack = loadImage('assets/fennekin_back.png'); // fennekin
+  // fenFront = loadImage('assets/fennekin_front.png');
 
-  mudBack = loadImage('assets/mudkip_back.png'); // mudkip
-  mudFront = loadImage('assets/mudkip_front.png');
+  // mudBack = loadImage('assets/mudkip_back.png'); // mudkip
+  // mudFront = loadImage('assets/mudkip_front.png');
 
   // munchFront = loadImage('assets/munchlax_front.png'); // munchlax
 
@@ -213,6 +214,8 @@ function setup() {
   pokemonCenter = new Maps("Pokemon Center", pkGrid);
   pokeMart = new Maps("Pokemon Mart", pkGrid);
   gym = new Maps("Pokemon Gym", labGrid);
+
+  currentBuilding = playerHouse;
   
   wildZone = new Maps("Wild Zone", zoneGrid);
 
@@ -233,9 +236,9 @@ function setup() {
   tackle = new Attacks("Tackle", 5, 100);
 
   //Pokemons
-  bulb = new Bromon("Bulbasaur", bulbFront, [tackle], 30, 10, 20, 5);
-  fennekin = new Bromon("Fennekin", fenFront, [tackle], 20, 30, 15, 5);
-  mudkip = new Bromon("Mudkip", mudFront, [tackle], 25, 20, 30, 5);
+  bulb = new Bromon("Bulbasaur", loadImage('assets/bulbasaur_front.png'), [tackle], 30, 10, 20, 5);
+  fennekin = new Bromon("Fennekin", loadImage('assets/fennekin_front.png'), [tackle], 20, 30, 15, 5);
+  mudkip = new Bromon("Mudkip", loadImage('assets/mudkip_front.png'), [tackle], 25, 20, 30, 5);
 }
 
 function draw() {
@@ -348,6 +351,25 @@ function playGame() {
       else {
         if (enemyHealth < mainPlayer.bromonHealth) {
           //win
+          let winDialog;
+
+          if (inZone) {
+            winDialog = ["Nice you won bro.", "Your " + mainPlayer.pokebro[0].name + " gained some experience."];
+          }
+          else {
+            //winDialog = 
+          }
+
+          textBox(winDialog[textNum]);
+
+          if (aPressed) {
+            textNum++;
+          }
+
+          if (textNum === dialogArray.length) {
+            talking = false;
+            textNum = 0;
+          }
         }
         else {
           //lose
@@ -358,10 +380,9 @@ function playGame() {
     else {
       textBox("u r supposed to be battling");
 
-      if (keyPressed()) {
-        if (key === " ") {
-          gameState = 0;
-        }
+      if (aPressed) {
+        gameState = 0;
+        aPressed = false;
       }
     }
   }
@@ -559,6 +580,17 @@ function determineBuilding(xIndex, yIndex) {
       return pokeMart;
     }
     else if (xIndex === 13 && yIndex === 9) {
+      return gym;
+    }
+  }
+  else if (maps[currentMap] === brotopolis) {
+    if (xIndex === 23 && yIndex === 15) {
+      return pokemonCenter;
+    }
+    else if (xIndex === 8 && yIndex === 15) {
+      return pokeMart;
+    }
+    else if (xIndex === 16 && yIndex === 9 || xIndex === 15 && yIndex === 9) {
       return gym;
     }
   }

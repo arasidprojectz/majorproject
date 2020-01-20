@@ -97,7 +97,7 @@ class Character {
     mainPlayerIndex.y = playerYIndex;
 
     if (movingDown) {  
-      if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1 || playerYIndex === wildZone.grid.length - 1) {
+      if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1 || inZone && playerYIndex === wildZone.grid.length - 1) {
         if (insideBuilding) {
           if (playerXIndex === floor(currentBuilding.grid.length/2)) { 
             insideBuilding = false;
