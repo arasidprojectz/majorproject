@@ -94,7 +94,7 @@ class Character {
     mainPlayerIndex.y = playerYIndex;
 
     if (movingDown) {  
-      if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1) {
+      if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1 || playerYIndex === wildZone.grid.length - 1) {
         if (insideBuilding) {
           if (playerXIndex === floor(currentBuilding.grid.length/2)) { 
             insideBuilding = false;
@@ -105,13 +105,11 @@ class Character {
             this.y = previousPlayerPos.y;
           }
         }
-        else {
-          if (gameState === 0) {
-            currentMap--;
-            this.y -= groundUnit.height * (ROWS - 1);
-            mapPos.y = floor(ROWS/2);
-            newMap = true;
-          }
+        else if (!inZone) {
+          currentMap--;
+          this.y -= groundUnit.height * (ROWS - 1);
+          mapPos.y = floor(ROWS/2);
+          newMap = true;
         }
       }
       else if (walkable(playerXIndex, playerYIndex + 1)) {
@@ -126,8 +124,8 @@ class Character {
     }
     else if (movingUp) {  
       if (playerYIndex === 0 && !insideBuilding) {
-        if (currentMap < maps.length - 1) {
-          if (gameState === 0) {
+        if (!inZone) {
+          if (currentMap < maps.length - 1) {
             if (canLeaveTown(maps[currentMap])) {
               currentMap++;
               this.y += groundUnit.height * (ROWS - 1);
@@ -166,18 +164,21 @@ class Character {
       movingUp = false;
     }   
     else if (movingRight) { 
-      if (playerXIndex === maps[currentMap].length - 1 && !insideBuilding) {
-        if (gameState === 0) {
-          gameState = 1;
-        }
-        else if (gameState === 1) {
-          gameState = 0;
-        }
+      if (playerXIndex === maps[currentMap].grid.length - 1 && !insideBuilding && !inZone) {
+        inZone = true;
+
+        previousMapPos.x = mapPos.x;
+        previousMapPos.y = mapPos.y;
+        previousPlayerPos.x = this.x;
+        previousPlayerPos.y = this.y;
+
         this.x -= groundUnit.width * (COLS - 1);
+        this.y = groundUnit.height * (ROWS/2);
         mapPos.x = floor(COLS/2);
+        mapPos.y = floor(ROWS/2);
       } 
       else if (walkable(playerXIndex + 1, playerYIndex)) {
-        if (atRightEdge || atLeftEdge && !playerInXMiddle) {
+        if (atRightEdge || atLeftEdge && !playerInXMiddle || inZone) {
           this.x += groundUnit.width;
         }
         else {
@@ -188,14 +189,14 @@ class Character {
     }
     else if (movingLeft) { 
       if (playerXIndex === 0 && !insideBuilding) {
-        if (gameState === 0) {
-          gameState = 1;
+        if (playerYIndex === 11 || playerYIndex === 10 || playerYIndex === 9) {
+          inZone = false;
+
+          mapPos.x = previousMapPos.x;
+          mapPos.y = previousMapPos.y;
+          this.x = previousPlayerPos.x;
+          this.y = previousPlayerPos.y;
         }
-        else if (gameState === 1) {
-          gameState = 0;
-        }
-        mapPos.x = maps[currentMap].grid.length - round(COLS/2)
-        this.x += groundUnit.width * (COLS - 1);
       } 
       else if (walkable(playerXIndex - 1, playerYIndex)) {
         if (atLeftEdge || atRightEdge && !playerInXMiddle) {
@@ -210,35 +211,34 @@ class Character {
   }
 }
 
-class Pokebros {
-  constructor(nameString, type, attackInt, defenseInt, speedInt, catchRateInt, spawnRateInt, movesetArray) {
-    this.name = nameString;
-    this.type = type;
+class Bromon {
 
-    this.attack = attackInt;
-    this.defense = defenseInt;
-    this.speed = speedInt;
-
-    this.catchRate = catchRateInt;
-    this.spawnRate = spawnRateInt;
-
-    this.moveset = movesetArray;
+  // stats, level, type(need to have)
+  constructor(name, sprite, moves, health, size, bromonHealth) {
+    this.name = name;
+    this.sprite = sprite;
+    this.moves = moves;
+    this.health = health;
+    this.size = size;
+    this.bromonHealth = bromonHealth;
   }
 
-  displayInBattle() {
-    //yo boss
+
+  displayEnemyFrontSprite() {
+    imageMode(CENTER);
+    image(bromon, 1.5*(width/2), 1.09*(height/4), 250, 210);
   }
 
-  displayInParty() {
-    //hello
+
+  displayYourBackSprite() {
+    imageMode(CENTER);
+    image(bromon, 0.45*(width/2), 1.21*(height/2), 250, 210); 
   }
 
-  useAttack(attackUsed) {
-    
-  }
+
 }
 
-class Towns {
+class Maps {
   constructor(nameString, mapArray) {
     this.name = nameString;
 
@@ -253,7 +253,7 @@ class Towns {
         rect(xPos * groundUnit.width, yPos * groundUnit.height, groundUnit.width + 2, groundUnit.height + 2);
 
         if (this.grid[i][j] === "@") {
-          determineNPC(i, j).display(xPos * groundUnit.width, yPos * groundUnit.height);
+          determineNPC().display(xPos * groundUnit.width, yPos * groundUnit.height);
         }
       }
     }
@@ -261,12 +261,9 @@ class Towns {
 }
 
 class NPC {  
-  constructor(nameString, pokebroArray, xIndex, yIndex, sprite) {
+  constructor(nameString, pokebroArray, sprite) {
     this.name = nameString;
     this.pokebros = pokebroArray;
-
-    this.xIndex = xIndex;
-    this.yIndex = yIndex;
 
     this.sprite = sprite;
   }

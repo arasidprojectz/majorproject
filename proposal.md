@@ -8,8 +8,7 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - NPCs
 - Character dialog/interactions
 - Pokemon sprites
-- Battling/character and attacks to battle with
-- Battle system (hitpoints/damage calculation)
+- Battling(with hitpoints/damage calculation)/character and attacks to battle with
 - AI system for battling
 - Catching(nice to have)/battling wild Pokemons
 - A goal for the player to pursue
@@ -17,7 +16,7 @@ Our goal is to create a top-down RPG similar to Pokemon but on a much smaller sc
 - Item system - different items will have different effects on Pokemon (ex. healing items)
 - Pokemon center (place where you can heal your pokemon)/Pokemon shop where you can buy items
 - Currency
-- Menu system displaying Pokemon(nice to have multiple), Items, Save (nice to have), Trainer Card (holds information such as time spent playing, player name, currency), Pokedex (nice to have), Options, Return to Main Menu
+- Menu system displaying Pokemon(nice to have multiple), Items, Save (nice to have), Trainer Card (holds information such as time spent playing, player name, currency), Pokedex (nice to have), Return to Main Menu
 
 ## Nice To Have:
 - Pokemon types (with advantages/disadvantages)

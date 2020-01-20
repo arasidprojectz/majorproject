@@ -9,7 +9,7 @@
 let inputBox;
 
 //states
-let state = 0;
+let mainState = 1;
 let gameState = 0;
 let currentMap = 0;
 let textNum = 0;
@@ -25,7 +25,11 @@ let changeState = true;
 //characters
 let mainPlayer;
 
+let leMom;
+let profBoi;
+let wildZoneGuy;
 let firstTownGuy;
+let secondTownGuy;
 
 let previousPlayerPos = {
   x: 0,
@@ -47,6 +51,7 @@ let grass;
 
 let maps = [];
 let newMap = true;
+let inZone = false;
 
 let currentBuilding;
 let insideBuilding = false;
@@ -74,6 +79,8 @@ let cursor = 0;
 const COLS = 21;
 const ROWS = 21;
 
+let leCash = 500;
+
 let mapPos = {
   x: 14,
   y: 16
@@ -98,6 +105,19 @@ let directions = {
 
 let currentDirections = directions.down;
 
+// states for the different options
+let state = "menu"
+let bromon;
+let pokeName;
+
+let enemy;
+let enemyHealth;
+
+let player;
+let playerHealth;
+let playerTurn;
+
+
 function preload() {
   //backgrounds
   introBg = loadImage("assets/introbackground.PNG");
@@ -115,14 +135,60 @@ function preload() {
   //maps
   lilFlexTownTxt = loadStrings("maps/towns/lilFlexTown.txt");
   theRanchTxt = loadStrings("maps/towns/theRanch.txt");
+  someCityTxt = loadStrings("maps/towns/someTown.txt");
   playerHouseTxt = loadStrings("maps/buildings/playerHouse.txt");
   labTxt = loadStrings("maps/buildings/lab.txt");
+  zoneTxt = loadStrings("maps/towns/wildZone.txt");
+  pkCenterTxt = loadStrings("maps/buildings/pkmnCenter.txt");
 
   //menu things
   pokeballIcon = loadImage("assets/pokeball.png");
   bagIcon = loadImage("assets/bag.png");
   cardIcon = loadImage("assets/card.png");
   exitIcon = loadImage("assets/exit.png");
+
+  // //load sprites  i commented these out cuz loading take to long
+  // bulbBack = loadImage('assets/bulbasaur_back.png');
+  // bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
+  
+  // zamaBack = loadImage('assets/zamazenta_back.png'); // zamazenta
+  // zamaFront = loadImage('assets/zamazenta_front.png');
+
+  // pidgBack = loadImage('assets/pidgey_back.png'); // pidgey
+  // pidgFront = loadImage('assets/pidgey_front.png');
+
+  // ratBack = loadImage('assets/rattata_back.png'); // rattata
+  // ratFront = loadImage('assets/rattata_front.png'); 
+
+  // zubBack = loadImage('assets/zubat_back.png'); // zubat
+  // zubFront = loadImage('assets/zubat_front.png');
+
+  // fenBack = loadImage('assets/fennekin_back.png'); // fennekin
+  // fenFront = loadImage('assets/fennekin_front.png');
+
+  // mudBack = loadImage('assets/mudkip_back.png'); // mudkip
+  // mudFront = loadImage('assets/mudkip_front.png');
+
+  // munchBack = loadImage('assets/munchlax_back.png'); // munchlax
+  // munchFront = loadImage('assets/munchlax_front.png');
+
+  // macBack = loadImage('assets/machop_back.png'); // machop
+  // macFront = loadImage('assets/machop_front.png');
+
+  // lapBack = loadImage('assets/lapras_back.png'); // lapras
+  // lapFront = loadImage('assets/lapras_front.png');
+
+  // arcaBack = loadImage('assets/arcanine_back.png'); // arcanine
+  // arcaFront = loadImage('assets/arcanine_front.png');
+
+  // beeBack = loadImage('assets/beedrill_back.png'); // beedrill
+  // beeFront = loadImage('assets/beedrill_front.png');
+
+  // mukBack = loadImage('assets/muk_back.png'); // muk
+  // mukFront = loadImage('assets/muk_front.png');
+
+  // onixBack = loadImage('assets/onix_back'); // onix
+  // onixFront = loadImage('assets/onix_front');
 }
 
 function setup() {
@@ -131,33 +197,49 @@ function setup() {
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
 
-  //town stuff
+  //map stuff
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
+  someCityGrid = make2DArray(someCityTxt);
   playerHouseGrid = make2DArray(playerHouseTxt);
   labGrid = make2DArray(labTxt);
+  pkGrid = make2DArray(pkCenterTxt);
+  zoneGrid = make2DArray(zoneTxt);
 
-  lilFlexTown = new Towns("Lil Flex Town", lilFlexTownGrid);  //just use the text files bruh
-  theRanch = new Towns("The Ranch", theRanchGrid);
+  lilFlexTown = new Maps("Lil Flex Town", lilFlexTownGrid);  
+  theRanch = new Maps("The Ranch", theRanchGrid);
+  someCity = new Maps("Some City", someCityGrid);
 
-  maps = [lilFlexTown, theRanch];
+  maps = [lilFlexTown, theRanch, someCity];
 
   //buildings
-  playerHouse = new Towns("Player's House", playerHouseGrid);
+  playerHouse = new Maps("Player's House", playerHouseGrid);
+  lab = new Maps("Professor's Lab", labGrid);
+  pokemonCenter = new Maps("Pokemon Center", pkGrid);
+  pokeMart = new Maps("Pokemon Mart", pkGrid);
+  gym = new Maps("Pokemon Gym", labGrid);
   
+  wildZone = new Maps("Wild Zone", zoneGrid);
+
   //main character
-  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1);
+  mainPlayer = new Character("Bro", mainCharacterSprites, [5], width/2, height/2 - groundUnit.height/3.1); //empty the array ting bro
 
   //NPC
-  firstTownGuy = new NPC("Joe", [], 13, 1, loadImage("assets/frontSprite.png"));
-  leMom = new NPC("Mother", [], 5, 2, loadImage("assets/frontSprite.png"));
+  firstTownGuy = new NPC("Joe", [], loadImage("assets/frontSprite.png"));
+  secondTownGuy = new NPC("John", [], loadImage("assets/frontSprite.png"));
+  leMom = new NPC("Mother", [], loadImage("assets/frontSprite.png"));
+  profBoi = new NPC("Professor", [], loadImage("assets/frontSprite.png"));
+  wildZoneGuy = new NPC("That Guy", [], loadImage("assets/frontSprite.png"));
+  nurse = new NPC("Nurse", [], loadImage("assets/frontSprite.png"));
+  clerk = new NPC("Clerk", [], loadImage("assets/frontSprite.png"));
+  gymLeader = new NPC("Gym Leader", [], loadImage("assets/frontSprite.png"));
 }
 
 function draw() {
-  if (state === 0) {  
+  if (mainState === 0) {  
     gameIntro();
   } 
-  else if (state === 1) {
+  else if (mainState === 1) {
     playGame();
   }
 }
@@ -197,23 +279,59 @@ function playGame() {
       xPressed = false;
     }
   }
-  // else if (gameState === 1) {  //moving in map with grass
-  //   let wildMap; 
-
-  //   if (newMap || changeState) {
-      
-  //   }
+  else if (gameState === 1) {
     
+    displayBackGround();
 
-  // }
-  // else if (gameState === 2) {
-  //   //battle
-  // }
+      // position of Bromon in battle
+    rectMode(CENTER);
+    // rect(1.4*(width/2), 1.07*(height/4), 250, 210); // enemy sprite
+    // rect(0.45*(width/2), 1.21*(height/2), 250, 210); // your sprite
+
+    // test sprites
+    imageMode(CENTER);
+    //image(img, 1.4*(width/2), 1.07*(height/4), 130, 100); // bulbasaur 
+    //image(img2, 0.45*(width/2), 1.21*(height/2), 250, 195); // zamazenta
+
+
+    // if (player.health && enemy.health > 0){ 
+
+    // }
+  
+    if (state === "menu") {
+      fightOptionBorder();
+      displayWords();
+    }
+    if (state === "bordermove") {
+      bromonOptionBorder();
+      displayWords();
+    }
+    if (state === "bordermove2") {
+      itemOptionBorder();
+      displayWords();
+    }
+    if (state === "bordermove4") {
+      runOptionBorder();
+      displayWords();
+    }
+    if (state === "insidebattle") {
+      insideBattle();
+    }
+    if (state === "insidebromon") {
+      insideBromon();
+    }
+    if (state === "insideitem") {
+      insideItem();
+    }
+  }
 }
 
 function showMap() {
   if (insideBuilding) {
     currentBuilding.displayMap();
+  }
+  else if (inZone) {
+    wildZone.displayMap();
   }
   else {
     maps[currentMap].displayMap();
@@ -353,12 +471,15 @@ function textBox(theText) {
   noStroke();
   fill(0);
   textSize(20);
-  text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4)
+  text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4);
 }
 
 function walkable(xIndex, yIndex) {
   if (insideBuilding) {
     return currentBuilding.grid[yIndex][xIndex] === "#" || currentBuilding.grid[yIndex][xIndex] === "=";
+  }
+  else if (inZone) {
+    return wildZone.grid[yIndex][xIndex] === "#" || wildZone.grid[yIndex][xIndex] === "$" || wildZone.grid[yIndex][xIndex] === "=";
   }
   else {
     return maps[currentMap].grid[yIndex][xIndex] === "#" || maps[currentMap].grid[yIndex][xIndex] === "$";
@@ -370,6 +491,20 @@ function determineBuilding(xIndex, yIndex) {
     if (xIndex === 6 && yIndex === 14) {
       return playerHouse;
     }
+    else if (xIndex === 19 && yIndex === 26) {
+      return lab;
+    }
+  }
+  else if (maps[currentMap] === theRanch) {
+    if (xIndex === 24 && yIndex === 22) {
+      return pokemonCenter;
+    }
+    else if (xIndex === 20 && yIndex === 22) {
+      return pokeMart;
+    }
+    else if (xIndex === 13 && yIndex === 9) {
+      return gym;
+    }
   }
 }
 
@@ -378,8 +513,11 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
     if (insideBuilding) {
       return "#DEB887";
     } 
+    else if (inZone) {
+      return "#00FF00";
+    }
     else {
-      return "#F4A460"
+      return "#F4A460";
     }
   }
   else if (tileString === ".") {
@@ -391,30 +529,63 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
   else if (tileString === "^") {
     return "#FFFFFF"
   }
+  else if (tileString === "%") {
+    return "#FF4500"
+  }
+  else if (tileString === "!") {
+    return "#1E90FF"
+  }
+  else if (tileString === "]") {
+    return "#A52A2A"
+  }
+  else if (tileString === "$") {
+    return "#006400"
+  }
   else if (tileString === "=") {
-    return "#B22222"
+    if (inZone) {
+      return "#F4A460";
+    }
+    else {
+      return "#B22222"
+    }
   }
 }
 
-function determineNPC(xIndex, yIndex) {
-  if (maps[currentMap] === lilFlexTown) {
-    if (insideBuilding) {
-      if (currentBuilding === playerHouse) {
-        return leMom;
+function determineNPC() {
+  if (inZone) {
+    return wildZoneGuy;
+  }
+  else {
+    if (maps[currentMap] === lilFlexTown) {
+      if (insideBuilding) {
+        if (currentBuilding === playerHouse) {
+          return leMom;
+        }
+        else {
+          return profBoi;
+        }
       }
-      // else {
-      //   return prof;
-      // }
-    }
-    else {
-      if (xIndex === 0 && yIndex === 13 || xIndex === 0 && yIndex === 14 || xIndex === 1 && yIndex === 13) {
+      else {
         return firstTownGuy;
       }
     }
+    else if (maps[currentMap] === theRanch) {
+      if (insideBuilding) {
+        if (currentBuilding === pokemonCenter) {
+          return nurse;
+        }
+        else if (currentBuilding === pokeMart) {
+          return clerk;
+        }
+        else if (currentBuilding === gym) {
+          return gymLeader;
+        }
+      }
+      else {
+        return secondTownGuy;
+      }
+    }
   }
-  // else if (maps[currentMap === theRanch]) {
-
-  // }
 }
 
 function returnDialog(name) {
@@ -429,15 +600,154 @@ function returnDialog(name) {
   else if (name === "Mother") {
     return ["Boi watchu still doin in this house?", "Get yourself a pokebro and get out of here!!!"];
   }
+  else if (name === "Professor") {
+    if (canLeaveTown(lilFlexTown)) {
+      return ["Ok bro!", "You've got a pokebro!", "Now your goal is to go and get all 3 badges!"];
+    }
+    else {
+      mainPlayer.pokebro.push("a pokemon");  //change to actual pokemon
+      return ["Ah, hello" + mainPlayer.name + ".", "I'm assuming you're here for a pokebro?", "Well here ya go!"]; // add the "you've obtained blah"
+    }
+  }
+  else if (name === "John") {
+    return ["Hey boss.", "Just in case you weren't aware or forgot, orange buildings are Pokemon Centers to heal up your bros, blue buildings are PokeMarts to buy items, and brown buildings are pokemon gyms where you can battle a strong trainer to get badges!"];
+  }
+  else if (name === "Nurse") {
+    return ["Hello, welcome to the Pokemon Center.", "Your bro look tired, let me heal it up.", "Your bro should be fine now, have a nice day!"];
+  }
+  else if (name === "Clerk") {
+    return ["Hello, welcome to the PokeMart", "I'm sorry but everything is out of stock rn"];
+  }
+  else if (name === "Gym Leader") {
+    return ["Welcome to me gym.", "Ples battle me."];
+  }
 }
 
 function canLeaveTown(theTown) {
-  if (theTown === lilFlexTown) {
-    //return true;
-    return mainPlayer.pokebro.length > 0;
-  }
-  // else if (theTown === theRanch) {
-
+  // if (theTown === lilFlexTown) {
+  //   return theTown === lilFlexTown && mainPlayer.pokebro.length > 0;
   // }
+  // else if (theTown === theRanch) {
+  //   reu
+  // }
+  return mainPlayer.pokebro.length > 0;
 }
 
+function displayBackGround() {
+  // border at the bottom
+  displayBattle();
+  displayBattleStats();
+}
+
+function displayBattle() {
+  // bottom display
+  rectMode(CENTER);
+  fill(255);
+  strokeWeight(7);
+  stroke("black");
+  rect(width/2, 3.6*(height/4), width, height/5);
+  
+  if (state === "menu" || state === "bordermove" || state === "bordermove2" || 
+      state === "bordermove3" || state === "bordermove4") {
+    line(2*(width/3.1), 2*(height/2), 2*(width/3.1), 2*(height/2.5));
+  }
+}
+
+function displayWords() {
+  // fight button
+  fill(0);
+  stroke("black");
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("Fight", 3*(width/4), 1.73*(height/2));
+
+  // bromon button
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("Bromon", 3.6*(width/4), 1.73*(height/2));
+
+  // item button
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("Item", 2.98*(width/4), 1.9*(height/2)); 
+
+  // run button
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(35);
+  text("Run", 3.499*(width/4), 1.9*(height/2));
+}
+
+function fightOptionBorder() {
+  noFill();
+  stroke("red");
+  strokeWeight(2);
+  rect(3*(width/4), 1.73*(height/2), 100, 40, 10);
+}
+
+function bromonOptionBorder() {
+  noFill();
+  stroke("red");
+  strokeWeight(2);
+  rect(3.6*(width/4), 1.73*(height/2), 140, 40, 10);
+}
+
+function itemOptionBorder() {
+  noFill();
+  stroke("red");
+  strokeWeight(2);
+  rect(2.98*(width/4), 1.9*(height/2), 100, 40, 10);
+}
+
+function runOptionBorder() {
+  noFill();
+  stroke("red");
+  strokeWeight(2);
+  rect(3.499*(width/4), 1.9*(height/2), 100, 40, 10);
+}
+
+function insideBattle() {
+  rectMode(CENTER);
+  fill(255);
+  strokeWeight(7);
+  stroke("black");
+  rect(width/2, 3.6*(height/4), width, height/5);
+}
+
+function insideBromon() {
+  rectMode(CENTER);
+  fill(255);
+  strokeWeight(7);
+  stroke("black");
+  rect(width/2, 3.6*(height/4), width, height/5);
+}
+
+function insideItem() {
+  rectMode(CENTER);
+  fill(255);
+  strokeWeight(7);
+  stroke("black");
+  rect(width/2, 3.6*(height/4), width, height/5);
+}
+
+function displayBattleStats() {
+  // HP bars
+  rectMode(CENTER);
+  noFill();
+  strokeWeight(2.3);
+  stroke("black");
+  rect(1.7*(width/2), 2.5*(height/4), 150, 13);
+  rect(0.3*(width/2), 0.3*(height/2), 150, 13);
+
+  textAlign(CENTER, CENTER);
+  textSize(19);
+  text("H P", 1.49*(width/2), 2.5*(height/4));
+  text("H P", 0.09*(width/2), 0.3*(height/2));
+
+
+  // Pokemon names
+  //text("bromon", 1.6*(width/2), 2*(height/4));
+  //text("bromon", 0.25*(width/2), 0.07*(height/2));
+}
