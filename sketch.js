@@ -136,6 +136,7 @@ function preload() {
   lilFlexTownTxt = loadStrings("maps/towns/lilFlexTown.txt");
   theRanchTxt = loadStrings("maps/towns/theRanch.txt");
   someCityTxt = loadStrings("maps/towns/someTown.txt");
+  brotopolisTxt = loadStrings("maps/towns/brotopolis.txt");
   playerHouseTxt = loadStrings("maps/buildings/playerHouse.txt");
   labTxt = loadStrings("maps/buildings/lab.txt");
   zoneTxt = loadStrings("maps/towns/wildZone.txt");
@@ -201,6 +202,7 @@ function setup() {
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
   someCityGrid = make2DArray(someCityTxt);
+  brotopolisGrid = make2DArray(brotopolisTxt);
   playerHouseGrid = make2DArray(playerHouseTxt);
   labGrid = make2DArray(labTxt);
   pkGrid = make2DArray(pkCenterTxt);
@@ -209,8 +211,9 @@ function setup() {
   lilFlexTown = new Maps("Lil Flex Town", lilFlexTownGrid);  
   theRanch = new Maps("The Ranch", theRanchGrid);
   someCity = new Maps("Some City", someCityGrid);
+  brotopolis = new Maps("Brotopolis", brotopolisGrid);
 
-  maps = [lilFlexTown, theRanch, someCity];
+  maps = [lilFlexTown, theRanch, someCity, brotopolis];
 
   //buildings
   playerHouse = new Maps("Player's House", playerHouseGrid);
@@ -279,11 +282,11 @@ function playGame() {
       xPressed = false;
     }
   }
-  else if (gameState === 1) {
+  else if (gameState === 1) { //battle
     
     displayBackGround();
 
-      // position of Bromon in battle
+    // position of Bromon in battle
     rectMode(CENTER);
     // rect(1.4*(width/2), 1.07*(height/4), 250, 210); // enemy sprite
     // rect(0.45*(width/2), 1.21*(height/2), 250, 210); // your sprite
@@ -293,11 +296,6 @@ function playGame() {
     //image(img, 1.4*(width/2), 1.07*(height/4), 130, 100); // bulbasaur 
     //image(img2, 0.45*(width/2), 1.21*(height/2), 250, 195); // zamazenta
 
-
-    // if (player.health && enemy.health > 0){ 
-
-    // }
-  
     if (state === "menu") {
       fightOptionBorder();
       displayWords();
@@ -323,7 +321,15 @@ function playGame() {
     if (state === "insideitem") {
       insideItem();
     }
+    if (playerHealth <= 0){
+      gameOver();
+    }
+    
   }
+}
+
+function gameOver() {
+  //return to pokemon center
 }
 
 function showMap() {
@@ -497,6 +503,17 @@ function determineBuilding(xIndex, yIndex) {
   }
   else if (maps[currentMap] === theRanch) {
     if (xIndex === 24 && yIndex === 22) {
+      return pokemonCenter;
+    }
+    else if (xIndex === 20 && yIndex === 22) {
+      return pokeMart;
+    }
+    else if (xIndex === 13 && yIndex === 9) {
+      return gym;
+    }
+  }
+  else if (maps[currentMap] === someCity) {
+    if (xIndex === 4 && yIndex === 9) {
       return pokemonCenter;
     }
     else if (xIndex === 20 && yIndex === 22) {

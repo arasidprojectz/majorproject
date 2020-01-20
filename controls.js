@@ -60,7 +60,7 @@ function keyPressed() {
       state = "insidebattle";
     }
     if (key === " " && state === "bordermove4") {
-      // return to overworld/cannot run if against trainer
+      // return to overworld/cannot run if against trainer  btw reuring to overworld just set gameState to 0
     }
   }
   else if (gameState === 0) {
