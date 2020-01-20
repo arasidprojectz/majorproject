@@ -53,8 +53,8 @@ let maps = [];
 let newMap = true;
 let inZone = false;
 
-let currentBuilding;
-let insideBuilding = false;
+let currentBuilding = playerHouse;
+let insideBuilding = true;
 
 //buttons
 let aPressed = false;
@@ -82,8 +82,8 @@ const ROWS = 21;
 let leCash = 500;
 
 let mapPos = {
-  x: 14,
-  y: 16
+  x: 11,
+  y: 11
 };
 
 let previousMapPos = {
@@ -105,7 +105,7 @@ let directions = {
 
 let currentDirections = directions.down;
 
-// states for the different options
+// states for the different options in battle 
 let state = "menu"
 let bromon;
 let pokeName;
@@ -117,6 +117,9 @@ let player;
 let playerHealth;
 let playerTurn;
 
+let newBattle = false;
+
+let battlingMechanicsDone = false;
 
 function preload() {
   //backgrounds
@@ -149,47 +152,36 @@ function preload() {
   exitIcon = loadImage("assets/exit.png");
 
   // //load sprites  i commented these out cuz loading take to long
-  // bulbBack = loadImage('assets/bulbasaur_back.png');
-  // bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
+  bulbBack = loadImage('assets/bulbasaur_back.png');
+  bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
   
-  // zamaBack = loadImage('assets/zamazenta_back.png'); // zamazenta
-  // zamaFront = loadImage('assets/zamazenta_front.png');
+  // zamaFront = loadImage('assets/zamazenta_front.png'); // zamazenta
 
-  // pidgBack = loadImage('assets/pidgey_back.png'); // pidgey
-  // pidgFront = loadImage('assets/pidgey_front.png');
+  // pidgFront = loadImage('assets/pidgey_front.png'); // pidgey
 
-  // ratBack = loadImage('assets/rattata_back.png'); // rattata
-  // ratFront = loadImage('assets/rattata_front.png'); 
+  // ratFront = loadImage('assets/rattata_front.png'); // rattata
 
-  // zubBack = loadImage('assets/zubat_back.png'); // zubat
-  // zubFront = loadImage('assets/zubat_front.png');
+  // zubFront = loadImage('assets/zubat_front.png'); // zubat
 
-  // fenBack = loadImage('assets/fennekin_back.png'); // fennekin
-  // fenFront = loadImage('assets/fennekin_front.png');
+  fenBack = loadImage('assets/fennekin_back.png'); // fennekin
+  fenFront = loadImage('assets/fennekin_front.png');
 
-  // mudBack = loadImage('assets/mudkip_back.png'); // mudkip
-  // mudFront = loadImage('assets/mudkip_front.png');
+  mudBack = loadImage('assets/mudkip_back.png'); // mudkip
+  mudFront = loadImage('assets/mudkip_front.png');
 
-  // munchBack = loadImage('assets/munchlax_back.png'); // munchlax
-  // munchFront = loadImage('assets/munchlax_front.png');
+  // munchFront = loadImage('assets/munchlax_front.png'); // munchlax
 
-  // macBack = loadImage('assets/machop_back.png'); // machop
-  // macFront = loadImage('assets/machop_front.png');
+  // macFront = loadImage('assets/machop_front.png'); // machop
 
-  // lapBack = loadImage('assets/lapras_back.png'); // lapras
-  // lapFront = loadImage('assets/lapras_front.png');
+  // lapFront = loadImage('assets/lapras_front.png'); // lapras
 
-  // arcaBack = loadImage('assets/arcanine_back.png'); // arcanine
-  // arcaFront = loadImage('assets/arcanine_front.png');
+  // arcaFront = loadImage('assets/arcanine_front.png'); // arcanine
 
-  // beeBack = loadImage('assets/beedrill_back.png'); // beedrill
-  // beeFront = loadImage('assets/beedrill_front.png');
+  // beeFront = loadImage('assets/beedrill_front.png'); // beedrill
 
-  // mukBack = loadImage('assets/muk_back.png'); // muk
-  // mukFront = loadImage('assets/muk_front.png');
+  // mukFront = loadImage('assets/muk_front.png'); // muk
 
-  // onixBack = loadImage('assets/onix_back'); // onix
-  // onixFront = loadImage('assets/onix_front');
+  // onixFront = loadImage('assets/onix_front'); // onix
 }
 
 function setup() {
@@ -225,7 +217,7 @@ function setup() {
   wildZone = new Maps("Wild Zone", zoneGrid);
 
   //main character
-  mainPlayer = new Character("Bro", mainCharacterSprites, [5], width/2, height/2 - groundUnit.height/3.1); //empty the array ting bro
+  mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1); 
 
   //NPC
   firstTownGuy = new NPC("Joe", [], loadImage("assets/frontSprite.png"));
@@ -236,6 +228,14 @@ function setup() {
   nurse = new NPC("Nurse", [], loadImage("assets/frontSprite.png"));
   clerk = new NPC("Clerk", [], loadImage("assets/frontSprite.png"));
   gymLeader = new NPC("Gym Leader", [], loadImage("assets/frontSprite.png"));
+
+  //Attacks
+  tackle = new Attacks("Tackle", 5, 100);
+
+  //Pokemons
+  bulb = new Bromon("Bulbasaur", bulbFront, [tackle], 30, 10, 20, 5);
+  fennekin = new Bromon("Fennekin", fenFront, [tackle], 20, 30, 15, 5);
+  mudkip = new Bromon("Mudkip", mudFront, [tackle], 25, 20, 30, 5);
 }
 
 function draw() {
@@ -283,48 +283,87 @@ function playGame() {
     }
   }
   else if (gameState === 1) { //battle
+
+    if (battlingMechanicsDone) {
+      if (newBattle) {
+        //stuff
+        enemyHealth = enemy.health;
+        playerTurn = mainPlayer.pokebro[0].speed > enemy.speed;
+
+        newBattle = false;
+      }
+      
+      if (enemyHealth > 0 && mainPlayer.bromonHealth > 0 && !run) {
+        displayBackGround();
     
-    displayBackGround();
-
-    // position of Bromon in battle
-    rectMode(CENTER);
-    // rect(1.4*(width/2), 1.07*(height/4), 250, 210); // enemy sprite
-    // rect(0.45*(width/2), 1.21*(height/2), 250, 210); // your sprite
-
-    // test sprites
-    imageMode(CENTER);
-    //image(img, 1.4*(width/2), 1.07*(height/4), 130, 100); // bulbasaur 
-    //image(img2, 0.45*(width/2), 1.21*(height/2), 250, 195); // zamazenta
-
-    if (state === "menu") {
-      fightOptionBorder();
-      displayWords();
-    }
-    if (state === "bordermove") {
-      bromonOptionBorder();
-      displayWords();
-    }
-    if (state === "bordermove2") {
-      itemOptionBorder();
-      displayWords();
-    }
-    if (state === "bordermove4") {
-      runOptionBorder();
-      displayWords();
-    }
-    if (state === "insidebattle") {
-      insideBattle();
-    }
-    if (state === "insidebromon") {
-      insideBromon();
-    }
-    if (state === "insideitem") {
-      insideItem();
-    }
-    if (playerHealth <= 0){
-      gameOver();
-    }
+        // position of Bromon in battle
+        rectMode(CENTER);
+        //rect(1.4*(width/2), 1.07*(height/4), 250, 210); // enemy sprite
+        //rect(0.45*(width/2), 1.21*(height/2), 250, 210); // your sprite
     
+        // test sprites
+        imageMode(CENTER);
+        //image(img, 1.4*(width/2), 1.07*(height/4), 130, 100); // bulbasaur 
+        //image(img2, 0.45*(width/2), 1.21*(height/2), 250, 195); // zamazenta
+
+        if (playerTurn) {
+      
+          if (state === "menu") {
+            fightOptionBorder();
+            displayWords();
+          }
+          if (state === "bordermove") {
+            bromonOptionBorder();
+            displayWords();
+          }
+          if (state === "bordermove2") {
+            itemOptionBorder();
+            displayWords();
+          }
+          if (state === "bordermove4") {
+            runOptionBorder();
+            displayWords();
+          }
+          if (state === "insidebattle") {
+            insideBattle();
+          }
+          if (state === "insidebromon") {
+            insideBromon();
+          }
+          if (state === "insideitem") {
+            insideItem();
+          }
+          if (playerHealth <= 0){
+            gameOver();
+          }
+
+          playerTurn = false;
+        }
+        else {
+          //enemy's turn
+
+          playerTurn = true;
+        }
+      }
+      else {
+        if (enemyHealth < mainPlayer.bromonHealth) {
+          //win
+        }
+        else {
+          //lose
+        }
+      }
+
+    }
+    else {
+      textBox("u r supposed to be battling");
+
+      if (keyPressed()) {
+        if (key === " ") {
+          gameState = 0;
+        }
+      }
+    }
   }
 }
 

@@ -42,6 +42,9 @@ class Character {
 
     this.x = x;
     this.y = y;
+
+    this.bromonHealth;
+    this.bromonExp = 0;
   }
   
   display() {
@@ -214,13 +217,14 @@ class Character {
 class Bromon {
 
   // stats, level, type(need to have)
-  constructor(name, sprite, moves, health, size, bromonHealth) {
+  constructor(name, sprite, moves, health, speed, attack, level) {
     this.name = name;
     this.sprite = sprite;
     this.moves = moves;
-    this.health = health;
-    this.size = size;
-    this.bromonHealth = bromonHealth;
+    this.lvl = level;
+    this.health = health + (2 * this.lvl);
+    this.speed = speed + this.lvl;
+    this.attack = attack + this.lvl;
   }
 
 
@@ -236,6 +240,15 @@ class Bromon {
   }
 
 
+}
+
+class Attacks {
+  constructor(name, damage, accuracy) {
+    this.name = name;
+
+    this.damage = damage;
+    this.accuracy = accuracy;
+  }
 }
 
 class Maps {

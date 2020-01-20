@@ -13,8 +13,11 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 
 ## How Was It Solved
 - I had some friends beta-test to find a bunch of small bugs
-- Fixing the bugs took some time but for the most part it wasn't hard after I started thinking of the player's movement on a 2D grid (since that's how it moved), as opposed to a freely flowing object.
+- Fixing the bugs took some time but for the most part it wasn't hard after I started thinking of the player's movement on a 2D grid (since that's how it moved), as opposed to a freely moving object.
 - The time issues aren't something you can fix (sadly I don't have a time machine)
+
+## Did I Complete All the Need to Have
+- 
 
 ## What Would I Change If I Were to Redo
 - Plan more ahead of time
@@ -24,3 +27,19 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 - Use more parameters and return functions
 
 # Nabeel
+
+## Biggest Challenge
+
+
+## How It Was Solved
+
+
+## Did I Complete All The Need To Have List
+
+
+## What would I Change If I Were To Redo
+- improve layout of battle screen
+- plan more ahead of time
+- make some parts of code more efficient
+- more pokemon
+- 
