@@ -309,6 +309,7 @@ function playGame() {
       
       if (enemyHealth > 0 && mainPlayer.bromonHealth > 0 && !run) {
         displayBackGround();
+        
     
         // position of Bromon in battle
         rectMode(CENTER);
