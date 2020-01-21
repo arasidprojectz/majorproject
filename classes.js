@@ -15,7 +15,7 @@ class MenuOptions {
     
     this.width = widthVal;
     this.height = heightVal;
-    this.action() = someFunction()
+    this.stuff = someFunction;
   }
 
   display() {
@@ -29,6 +29,10 @@ class MenuOptions {
     stroke(255, 0, 0);
     noFill();
     rect(this.x - 60, this.y - 20, this.width * 0.9, this.height/2, 10);
+  }
+
+  action() {
+    this.stuff();
   }
 }
 
@@ -296,6 +300,36 @@ class NPC {
     }
 
     if (textNum === dialogArray.length) {
+      if (this.name === "Professor") {
+        if (!canLeaveTown(lilFlexTown)) {
+          let chance = random();
+
+          if (chance > 0.66) {
+            mainPlayer.pokebro.push(bulb);
+          }
+          else if (chance > 0.33) {
+            mainPlayer.pokebro.push(fennekin); 
+          }
+          else {
+            mainPlayer.pokebro.push(mudkip); 
+          }
+
+          mainPlayer.bromonHealth = mainPlayer.pokebro[0].health;
+        }
+      }
+      else if (this.name === "Gym Leader 1") {
+        gameState = 1;
+        enemy = gymLeader1.pokebros[0];
+      }
+      else if (this.name === "Gym Leader 2") {
+        gameState = 1;
+        enemy = gymLeader2.pokebros[0];
+      }
+      else if (this.name === "Gym Leader 3") {
+        gameState = 1;
+        enemy = gymLeader3.pokebros[0];
+      }
+
       talking = false;
       textNum = 0;
     }

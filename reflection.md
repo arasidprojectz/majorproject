@@ -16,9 +16,6 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 - Fixing the bugs took some time but for the most part it wasn't hard after I started thinking of the player's movement on a 2D grid (since that's how it moved), as opposed to a freely moving object.
 - The time issues aren't something you can fix (sadly I don't have a time machine)
 
-## Did I Complete All the Need to Have
-- 
-
 ## What Would I Change If I Were to Redo
 - Plan more ahead of time
 - Add music
@@ -32,9 +29,6 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 
 
 ## How It Was Solved
-
-
-## Did I Complete All The Need To Have List
 
 
 ## What would I Change If I Were To Redo

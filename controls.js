@@ -66,7 +66,7 @@ function keyPressed() {
   else if (gameState === 0) {
     if (keyCode === DOWN_ARROW) {
       if (!talking) {
-        if (menuOpen) {
+        if (menuOpen && !menuSelected) {
           cursor++;
         }
         else {
@@ -89,7 +89,7 @@ function keyPressed() {
     } 
     else if (keyCode === UP_ARROW) {
       if (!talking) {
-        if (menuOpen) {
+        if (menuOpen && !menuSelected) {
           cursor--;
         }
         else {
