@@ -3,6 +3,10 @@
 ## Description
 For our project we attempted to make a small-scale pokemon game in which a player can move around, interact with building and people, and battle pokemon.
 
+## How Much Need To Have Was Finished
+- All of our need to haves were implemented but we weren't able to get the battle mechanics to function perfectly so it's not actually in the game
+- Didn't find the time to finish actually buying items
+
 # Abrar 
 
 ## Biggest Challenge
@@ -16,7 +20,7 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 - Fixing the bugs took some time but for the most part it wasn't hard after I started thinking of the player's movement on a 2D grid (since that's how it moved), as opposed to a freely moving object.
 - The time issues aren't something you can fix (sadly I don't have a time machine)
 
-## What Would I Change If I Were to Redo
+## What Would I Change if I Were to Redo
 - Plan more ahead of time
 - Add music
 - Better efficiency
@@ -26,14 +30,16 @@ For our project we attempted to make a small-scale pokemon game in which a playe
 # Nabeel
 
 ## Biggest Challenge
-
+- Biggest challenge for me was coding the battle mechanics. I was able to get the looks of the simulator done but encountered some difficulties with the battle mechanics
+- Some bugs were present when switching from the battle buttons
+- Time was another issue for me. Was able to work well and got most things done before the break. During and after the break, I spent most time with scolarships and other classes. 
 
 ## How It Was Solved
-
+- Last few days were spent mostly trying to figure out the battle mechanics. Some of the logic was done correctly but we couldn't really get it to work
+- Some bugs were easily fixed while others took some time
 
 ## What would I Change If I Were To Redo
 - improve layout of battle screen
-- plan more ahead of time
+- plan and work more ahead of time
 - make some parts of code more efficient
 - more pokemon
-- 

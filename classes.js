@@ -5,6 +5,7 @@
 // 
 // 12/30/1867
 
+//to create objects for menu options, makes life easier
 class MenuOptions {
   constructor(someTitle, somePicture, xPos, yPos, widthVal, heightVal, someFunction) {
     this.title = someTitle;
@@ -36,6 +37,7 @@ class MenuOptions {
   }
 }
 
+//class for main player
 class Character {
   constructor(theName, spriteArray, pokebroArray, x, y) {
     this.name = theName;
@@ -56,6 +58,7 @@ class Character {
   }
   
   move() {
+    //checking all the positions of the player and map for movement
     let atRightEdge;
     let atBottomEdge;
     let atLeftEdge = mapPos.x - floor(COLS/2) === 0;
@@ -103,9 +106,11 @@ class Character {
     if (movingDown) {  
       if (insideBuilding && playerYIndex === currentBuilding.grid.length - 1 || playerYIndex === maps[currentMap].grid.length - 1 || inZone && playerYIndex === wildZone.grid.length - 1) {
         if (insideBuilding) {
+          //exits building
           if (playerXIndex === floor(currentBuilding.grid.length/2)) { 
             insideBuilding = false;
             
+            //returns to previous position
             mapPos.x = previousMapPos.x;
             mapPos.y = previousMapPos.y;
             this.x = previousPlayerPos.x;
@@ -113,12 +118,14 @@ class Character {
           }
         }
         else if (!inZone) {
+          //changing maps
           currentMap--;
           this.y -= groundUnit.height * (ROWS - 1);
           mapPos.y = floor(ROWS/2);
           newMap = true;
         }
       }
+      //only allows you to walk on certain tiles
       else if (walkable(playerXIndex, playerYIndex + 1)) {
         if (atBottomEdge || atTopEdge && !playerInYMiddle) {
           this.y += groundUnit.height;
@@ -133,12 +140,14 @@ class Character {
       if (playerYIndex === 0 && !insideBuilding) {
         if (!inZone) {
           if (currentMap < maps.length - 1) {
+            //changing maps
             if (canLeaveTown(maps[currentMap])) {
               currentMap++;
               this.y += groundUnit.height * (ROWS - 1);
               mapPos.y = maps[currentMap].grid.length - round(ROWS/2);
               newMap = true;
             }
+            //restriction at the beginning of the game
             else {
               talking = true;
               currentDirections = directions.left;
@@ -146,6 +155,7 @@ class Character {
           }
         }
       }
+      //only allows you to walk on certain tiles
       else if (walkable(playerXIndex, playerYIndex - 1)) {
         if (atTopEdge || atBottomEdge && !playerInYMiddle) {
           this.y -= groundUnit.height;
@@ -154,10 +164,12 @@ class Character {
           mapPos.y--;
         }
       }
+      //entering building
       else if (maps[currentMap].grid[playerYIndex - 1][playerXIndex] === "^") {
         insideBuilding = true;
         currentBuilding = determineBuilding(playerXIndex, playerYIndex);
 
+        //saves positioning for when leaving
         previousMapPos.x = mapPos.x;
         previousMapPos.y = mapPos.y;
         previousPlayerPos.x = this.x;
@@ -172,8 +184,10 @@ class Character {
     }   
     else if (movingRight) { 
       if (playerXIndex === maps[currentMap].grid.length - 1 && !insideBuilding && !inZone) {
+        //entering wild zone
         inZone = true;
 
+        //saving positioning for when leaving
         previousMapPos.x = mapPos.x;
         previousMapPos.y = mapPos.y;
         previousPlayerPos.x = this.x;
@@ -184,6 +198,7 @@ class Character {
         mapPos.x = floor(COLS/2);
         mapPos.y = floor(ROWS/2);
       } 
+      //only allows you to walk on certain tiles
       else if (walkable(playerXIndex + 1, playerYIndex)) {
         if (atRightEdge || atLeftEdge && !playerInXMiddle || inZone) {
           this.x += groundUnit.width;
@@ -196,15 +211,18 @@ class Character {
     }
     else if (movingLeft) { 
       if (playerXIndex === 0 && !insideBuilding) {
+        //exits wild zone
         if (playerYIndex === 11 || playerYIndex === 10 || playerYIndex === 9) {
           inZone = false;
 
+          //return to saved positioning
           mapPos.x = previousMapPos.x;
           mapPos.y = previousMapPos.y;
           this.x = previousPlayerPos.x;
           this.y = previousPlayerPos.y;
         }
       } 
+      //only allows you to walk on certain tiles
       else if (walkable(playerXIndex - 1, playerYIndex)) {
         if (atLeftEdge || atRightEdge && !playerInXMiddle) {
           this.x -= groundUnit.width;
@@ -218,9 +236,8 @@ class Character {
   }
 }
 
+//class for the pokemons
 class Bromon {
-
-  // stats, level, type(need to have)
   constructor(name, sprite, moves, health, speed, attack, level) {
     this.name = name;
     this.sprite = sprite;
@@ -231,21 +248,18 @@ class Bromon {
     this.attack = attack + this.lvl;
   }
 
-
   displayEnemyFrontSprite() {
     imageMode(CENTER);
     image(bromon, 1.5*(width/2), 1.09*(height/4), 250, 210);
   }
 
-
   displayYourBackSprite() {
     imageMode(CENTER);
     image(bromon, 0.45*(width/2), 1.21*(height/2), 250, 210); 
   }
-
-
 }
 
+//class for the attacks in battles
 class Attacks {
   constructor(name, damage, accuracy) {
     this.name = name;
@@ -255,6 +269,7 @@ class Attacks {
   }
 }
 
+//class for all maps for cities, buildings etc.
 class Maps {
   constructor(nameString, mapArray) {
     this.name = nameString;
@@ -262,6 +277,7 @@ class Maps {
     this.grid = mapArray;
   }
 
+  //displays map based off textfile characters
   displayMap() { 
     for (let j = mapPos.x - floor(COLS/2), xPos = 0; xPos < COLS; j++, xPos++) {
       for (let i = mapPos.y - floor(ROWS/2), yPos = 0; yPos < ROWS; i++, yPos++) {
@@ -277,6 +293,7 @@ class Maps {
   }
 }
 
+//class for NPCs
 class NPC {  
   constructor(nameString, pokebroArray, sprite) {
     this.name = nameString;
@@ -289,6 +306,7 @@ class NPC {
     image(this.sprite, xPos + groundUnit.width/2, yPos + groundUnit.height/6, groundUnit.width, groundUnit.width);
   }
 
+  //returns specific dialog based on character loops through it
   talk() {
     let dialogArray = returnDialog(this.name);
     
@@ -319,14 +337,17 @@ class NPC {
       }
       else if (this.name === "Gym Leader 1") {
         gameState = 1;
+        newBattle = true;
         enemy = gymLeader1.pokebros[0];
       }
       else if (this.name === "Gym Leader 2") {
         gameState = 1;
+        newBattle = true;
         enemy = gymLeader2.pokebros[0];
       }
       else if (this.name === "Gym Leader 3") {
         gameState = 1;
+        newBattle = true;
         enemy = gymLeader3.pokebros[0];
       }
 

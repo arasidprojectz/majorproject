@@ -13,6 +13,9 @@ let mainState = 0;
 let gameState = 0;
 let currentMap = 0;
 let textNum = 0;
+let changeState = true;
+let cursor = 0;
+let state = "menu";
 
 //backgrounds
 let introBg;
@@ -20,18 +23,15 @@ let introBg;
 //background music/sound effects
 let introMusic;
 
-let changeState = true;
-
 //characters
 let mainPlayer;
-let trumpPic;
-
 let leMom;
 let profBoi;
 let wildZoneGuy;
 let firstTownGuy;
 let secondTownGuy;
 
+//player index variables
 let previousPlayerPos = {
   x: 0,
   y: 0
@@ -42,6 +42,7 @@ let mainPlayerIndex = {
   y: 0
 };
 
+//character interaction
 let facingPerson = false;
 let talking = false;
 
@@ -49,11 +50,18 @@ let talking = false;
 let prof;
 let mainCharacterSprites;
 let grass;
+let trumpPic;
+let pokeballIcon;
+let bagIcon;
+let cardIcon;
+let exitIcon;
 
+//mapping
 let maps = [];
 let newMap = true;
 let inZone = false;
 
+//building
 let currentBuilding;
 let insideBuilding = false;
 
@@ -63,28 +71,24 @@ let bPressed = false;
 let xPressed = false;
 let inputButton;
 
+//player movement booleans
 let movingUp = false;
 let movingDown = false;
 let movingRight = false;
 let movingLeft = false;
 
+//menu booleans
 let menuOpen = false;
-
 let menuSelected = false;
 
-let pokeballIcon;
-let bagIcon;
-let cardIcon;
-let exitIcon;
-
-let cursor = 0;
-
+//map grid
 const COLS = 21;
 const ROWS = 21;
 
 let leCash = 500;
 let badges = 0;
 
+//map positioning variables
 let mapPos = {
   x: 14,
   y: 16
@@ -95,11 +99,13 @@ let previousMapPos = {
   y: 0
 };
 
+//basic unit for 2d grid
 let groundUnit = {
   width: 0,
   height: 0
 };
 
+//direction enum
 let directions = {
   down: 0,
   up: 1,
@@ -109,8 +115,7 @@ let directions = {
 
 let currentDirections = directions.down;
 
-// states for the different options in battle 
-let state = "menu";
+//battle variables
 let bromon;
 let pokeName;
 
@@ -120,6 +125,8 @@ let enemyHealth;
 let player;
 let playerHealth;
 let playerTurn;
+
+let run;
 
 let newBattle = false;
 
@@ -155,38 +162,6 @@ function preload() {
   bagIcon = loadImage("assets/bag.png");
   cardIcon = loadImage("assets/card.png");
   exitIcon = loadImage("assets/exit.png");
-
-  // //load sprites  i commented these out cuz loading take to long
-  // bulbBack = loadImage('assets/bulbasaur_back.png');
-  // bulbFront = loadImage('assets/bulbasaur_front.png'); // bulbasaur
-  
-  // zamaFront = loadImage('assets/zamazenta_front.png'); // zamazenta
-
-  // pidgFront = loadImage('assets/pidgey_front.png'); // pidgey
-
-  // ratFront = loadImage('assets/rattata_front.png'); // rattata
-
-  // zubFront = loadImage('assets/zubat_front.png'); // zubat
-
-  // fenBack = loadImage('assets/fennekin_back.png'); // fennekin
-  // fenFront = loadImage('assets/fennekin_front.png');
-
-  // mudBack = loadImage('assets/mudkip_back.png'); // mudkip
-  // mudFront = loadImage('assets/mudkip_front.png');
-
-  // munchFront = loadImage('assets/munchlax_front.png'); // munchlax
-
-  // macFront = loadImage('assets/machop_front.png'); // machop
-
-  // lapFront = loadImage('assets/lapras_front.png'); // lapras
-
-  // arcaFront = loadImage('assets/arcanine_front.png'); // arcanine
-
-  // beeFront = loadImage('assets/beedrill_front.png'); // beedrill
-
-  // mukFront = loadImage('assets/muk_front.png'); // muk
-
-  // onixFront = loadImage('assets/onix_front'); // onix
 }
 
 function setup() {
@@ -195,7 +170,7 @@ function setup() {
   groundUnit.width = width/COLS;
   groundUnit.height = height/ROWS;
 
-  //map stuff
+  //creating 2d array from textfile to use for maps
   lilFlexTownGrid = make2DArray(lilFlexTownTxt);
   theRanchGrid = make2DArray(theRanchTxt);
   someCityGrid = make2DArray(someCityTxt);
@@ -205,6 +180,7 @@ function setup() {
   pkGrid = make2DArray(pkCenterTxt);
   zoneGrid = make2DArray(zoneTxt);
 
+  //defining cities
   lilFlexTown = new Maps("Lil Flex Town", lilFlexTownGrid);  
   theRanch = new Maps("The Ranch", theRanchGrid);
   someCity = new Maps("Some City", someCityGrid);
@@ -212,29 +188,28 @@ function setup() {
 
   maps = [lilFlexTown, theRanch, someCity, brotopolis];
 
-  //buildings
+  //defining buildings
   playerHouse = new Maps("Player's House", playerHouseGrid);
   lab = new Maps("Professor's Lab", labGrid);
   pokemonCenter = new Maps("Pokemon Center", pkGrid);
   pokeMart = new Maps("Pokemon Mart", pkGrid);
   gym = new Maps("Pokemon Gym", labGrid);
-
-  currentBuilding = playerHouse;
   
+  //wild zone map
   wildZone = new Maps("Wild Zone", zoneGrid);
 
-  //Attacks
+  //defininf attacks
   tackle = new Attacks("Tackle", 5, 100);
 
-  //Pokemons
+  //defining pokemons
   bulb = new Bromon("Bulbasaur", loadImage('assets/bulbasaur_front.png'), [tackle], 30, 10, 20, 5);
   fennekin = new Bromon("Fennekin", loadImage('assets/fennekin_front.png'), [tackle], 20, 30, 15, 5);
   mudkip = new Bromon("Mudkip", loadImage('assets/mudkip_front.png'), [tackle], 25, 20, 30, 5);
   
-  //main character
+  //creating main character
   mainPlayer = new Character("Bro", mainCharacterSprites, [], width/2, height/2 - groundUnit.height/3.1); 
 
-  //NPC
+  //defining NPCs
   firstTownGuy = new NPC("Joe", [], loadImage("assets/frontSprite.png"));
   secondTownGuy = new NPC("John", [], loadImage("assets/frontSprite.png"));
   leMom = new NPC("Mother", [], loadImage("assets/frontSprite.png"));
@@ -249,13 +224,13 @@ function setup() {
 }
 
 function draw() {
-  if (mainState === 0) {  
+  if (mainState === 0) {   // loops through intro scene
     gameIntro();
     menuOpen = false;
     aPressed = false;
     bPressed = false;
   } 
-  else if (mainState === 1) {
+  else if (mainState === 1) {  // rest of the game
     playGame();
   }
 }
@@ -264,14 +239,10 @@ function playGame() {
   background(0); 
 
   if (gameState === 0) {  //moving around on regular map
-    if (newMap || changeState) {
-      //maps[currentMap].playMusic();
-      newMap = false;
-    }
-
     showMap();
     mainPlayer.display();
 
+    //checks if either talking to someone or menu is open or else you can move character
     if (menuOpen) {
       openMenu();
     }
@@ -282,13 +253,13 @@ function playGame() {
       mainPlayer.move();
     }
 
+    //buttons
     if (aPressed && !menuOpen) {
       if (facingPerson) {
         talking = true;
       }
       aPressed = false;
     }
-
     if (xPressed && !talking) {
       menuOpen = !menuOpen;
       menuSelected = false;
@@ -297,7 +268,6 @@ function playGame() {
     }
   }
   else if (gameState === 1) { //battle
-
     if (battlingMechanicsDone) {
       if (newBattle) {
         //stuff
@@ -307,10 +277,14 @@ function playGame() {
         newBattle = false;
       }
       
-      if (enemyHealth > 0 && mainPlayer.bromonHealth > 0 && !run) {
+      if (enemyHealth > 0 && mainPlayer.bromonHealth > 0 && !run) {  //main condition for the battle
         displayBackGround();
+
+        //position of sprites
+        image(bromon, 0.45*(width/2), 1.21*(height/2), 250, 210);
+        image(bromon, 1.4*(width/2), 1.07*(height/4), 250, 210); 
         
-    
+        
         // position of Bromon in battle
         rectMode(CENTER);
         //rect(1.4*(width/2), 1.07*(height/4), 250, 210); // enemy sprite
@@ -361,35 +335,39 @@ function playGame() {
         }
       }
       else {
-        if (enemyHealth < mainPlayer.bromonHealth) {
-          //win
-          let winDialog;
+        let endDialog;
 
+        if (run) {  //if you ran away
+          endDialog = ["You ran away from the battle", "Kinda weak"];
+        }
+        else if (enemyHealth < mainPlayer.bromonHealth) {  //if you won
           if (inZone) {
-            winDialog = ["Nice you won bro.", "Your " + mainPlayer.pokebro[0].name + " gained some experience."];
+            endDialog = ["Nice you won bro.", "Your " + mainPlayer.pokebro[0].name + " gained some experience."];
+            //add experience
           }
           else {
-            winDialog = ["Nice man, you defeated me.", "You knocked the guy out and stole some money."];
-          }
-
-          textBox(winDialog[textNum]);
-
-          if (aPressed) {
-            textNum++;
-          }
-
-          if (textNum === dialogArray.length) {
-            talking = false;
-            textNum = 0;
+            endDialog = ["Nice man, you defeated me.", "You knocked the guy out and stole some money."];
+            //add gold
           }
         }
-        else {
-          //lose
+        else {  //if you lost
+          endDialog = ["RIP man, ya lost", "Feels bad moments"];
+          //give money to opposing player
+        }
+
+        textBox(endDialog[textNum]);
+
+        if (aPressed) {
+          textNum++;
+        }
+
+        if (textNum === dialogArray.length) {
+          talking = false;
+          textNum = 0;
         }
       }
-
     }
-    else {
+    else {  //filler while battle mechanic is in development
       textBox("u r supposed to be battling");
 
       if (aPressed) {
@@ -404,10 +382,11 @@ function gameOver() {
   //return to pokemon center
 }
 
-function showMap() {
+//shows specific map based on where player is
+function showMap() {  
   if (insideBuilding) {
     currentBuilding.displayMap();
-    displayCityName(currentBuilding);
+    displayCityName(currentBuilding); 
   }
   else if (inZone) {
     wildZone.displayMap();
@@ -420,7 +399,8 @@ function showMap() {
   }
 }
 
-function displayCityName(city) {
+//draws a small rectangle in the corner showing the name of the place you are currently in
+function displayCityName(city) {  
   fill(255);
   rect(0, 0, 100, 20);
   
@@ -429,13 +409,16 @@ function displayCityName(city) {
   text(city.name, 20, 5, 100, 10);
 }
 
-function openMenu() {
+//displays menu and allows you to move cursor
+function openMenu() {  
+  //defining menu dimensions
   let menuHeight = height * 0.9;
   let menuWidth = (width/4);
   let menuXPos = (3 * (width/4)) - 30;
   let menuYPos = height * 0.05;
   let selectionYPos = menuYPos + 60;
 
+  //defining menu options as objects
   let checkPokebros = new MenuOptions("Pokebros", pokeballIcon, menuXPos + 70, selectionYPos, menuWidth, menuHeight/4, displayPokebros);
   let checkBag = new MenuOptions("Bag", bagIcon, menuXPos + 70, selectionYPos + menuHeight/4, menuWidth, menuHeight/4, displayBag);
   let checkPlayerCard = new MenuOptions("Player Card", cardIcon, menuXPos + 70, selectionYPos + menuHeight/2, menuWidth, menuHeight/4, displayCard);
@@ -443,6 +426,7 @@ function openMenu() {
   
   let mainMenuOptions = [checkPokebros, checkBag, checkPlayerCard, exit]; 
 
+  //drawing the main box everything is in
   stroke(210);
   rect(menuXPos, menuYPos, menuWidth, menuHeight, 10);
   stroke(0, 200, 255);
@@ -450,6 +434,7 @@ function openMenu() {
   fill(255);
   rect(menuXPos + 2, menuYPos + 2, menuWidth - 4, menuHeight - 4, 10);
   
+  //displays all the options
   fill(0);
   for (let i = 0; i < mainMenuOptions.length; i++) {
     mainMenuOptions[i].display();  
@@ -463,13 +448,19 @@ function openMenu() {
     cursor = 3;
   }
   
+  //highlights specific option based on cursor
   mainMenuOptions[cursor].highlight(); 
+  
+  //performs function based on which option you clicked on
+  if (menuSelected) {
+    mainMenuOptions[cursor].action();
+  }
 
+  //buttons
   if (aPressed && !menuSelected) {
     menuSelected = true;
     aPressed = false;
   }
-
   if (bPressed) {
     if (menuSelected) {
       menuSelected = false;
@@ -478,10 +469,6 @@ function openMenu() {
       menuOpen = false;
     }
     bPressed = false;
-  }
-
-  if (menuSelected) {
-    mainMenuOptions[cursor].action();
   }
 }
 
@@ -501,12 +488,12 @@ function displayPokebros() {
       rect(x, y, (width/2) * 0.85, (height/3) * 0.75, 10);  //drawing out the rectangles in which the pokemons will be displayed
     }
   }
-  if (canLeaveTown(lilFlexTown)) {
+  if (canLeaveTown(lilFlexTown)) {  //displays your pokemon is you have any
     showPokebros();
   }
 }
 
-//shows pokemon stats, eventually a class will be created for the pokemons which will make this simpler
+//shows pokemon name and health
 function showPokebros() {
   noStroke();
 
@@ -524,7 +511,7 @@ function showPokebros() {
   fill(100);
   rect(width * 0.25, height * 0.225, 150, 10);
   fill(255, 0, 0);
-  rect(width * 0.25, height * 0.225, 150 * (mainPlayer.bromonHealth/mainPlayer.bromonHealth), 10);  //this length will be based off the current health once made
+  rect(width * 0.25, height * 0.225, 150 * (mainPlayer.bromonHealth/mainPlayer.bromonHealth), 10);  
   fill(0);
   textSize(15)
   text(String(mainPlayer.bromonHealth) + "/" + String(mainPlayer.bromonHealth), width * 0.3, height * 0.255, 50, 40);  
@@ -535,11 +522,12 @@ function displayBag() {
   background(147, 176, 204);
   noStroke();
 
+  //displays bag image on the side
   image(bagIcon, width/4, height/3, width/3, height/2);
   fill(92, 247, 165);
   rect(width * 0.45, height/12, width/2, height * 0.6, 10);
   fill(255);
-  rect(width * 0.465, height * 0.1, width * 0.47, height * 0.565, 10); //player class will have an array of items which will be displayed here
+  rect(width * 0.465, height * 0.1, width * 0.47, height * 0.565, 10);
 
   textBox("Your bag is empty.");  //this textbox will give brief info on the item
 }
@@ -570,24 +558,27 @@ function displayCard() {
   image(trumpPic, width * 0.66, height * 0.55, 175, 300);
 }
 
+//intro scene
 function gameIntro() {
-  let introDialog = ["Welcome to the monde de Bromon!!! (Press spacebar to continue)", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry, but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now!"];
+  let introDialog = ["Welcome to the monde de Bromon!!! (Press spacebar to continue)", "I am Songru Tom, the world's leading researcher in the field of flexology.", "Oh, I'm sorry, but what was your name again???", "placeholder", "Well, your journey to becoming the greatest flexer of the century begins now! Just remember, space bar = A button, 'b' = back button, 'x' = toggle menu, and use arrows keys to move!"];
   
+  //starts music, in if statement so that it doesn't restart everyframe
   if (changeState) {
     introMusic.play();
     changeState = false;
   }
   
+  //displays professor
   imageMode(CORNER);
   background(introBg);
   imageMode(CENTER);
   image(prof[textNum], width/2, height/2, width/4, 5 * (height/8));
   
+  //checks for text state as there are some specific things that happen
   if (textNum === 2) {
     noLoop(); 
     pickName();
   }
-
   if (textNum === 3) {
     textBox("Ah, yes, hello " + mainPlayer.name + "!");
   }
@@ -595,11 +586,11 @@ function gameIntro() {
     textBox(introDialog[textNum]);
   }
 
+  //buttons
   if (aPressed) {
     if (textNum === 4) {
       mainState++;
       introMusic.stop();
-      changeState = true;
       textNum = 0;
     }
     else {
@@ -620,8 +611,7 @@ function pickName() {  // remember to format input box
   greeting = createElement('h2', 'What is your name?');
   greeting.position(width/4 + (inputBox.width * 0.8), 4 * (height/5) - 50);
   
-  rect(width/5, 4 * (height/5), 20, 20); // border
-  //fill(51, 255, 255);
+  rect(width/5, 4 * (height/5), 20, 20);
 
   textSize(50);
 }
@@ -637,6 +627,7 @@ function setPlayerName() {
   loop(); 
 }
 
+//converts textfile into 2d array
 function make2DArray(textFile) {
   let theArray = [];
 
@@ -650,18 +641,22 @@ function make2DArray(textFile) {
   return theArray;
 }
 
+//displays text at the bottom of the screen like the pokemon games
 function textBox(theText) {
+  //textbox background
   fill(255);
   stroke(0);
   strokeWeight(5);
   rect(width * 0.01, 3 * (height/4) - height * 0.01, width - width * 0.02, height/4, 20);
 
+  //the text
   noStroke();
   fill(0);
   textSize(20);
   text(theText, width * 0.05, 3 * (height/4) + height * 0.03, width - width * 0.05, height/4);
 }
 
+//a return function for collision detection
 function walkable(xIndex, yIndex) {
   if (insideBuilding) {
     return currentBuilding.grid[yIndex][xIndex] === "#" || currentBuilding.grid[yIndex][xIndex] === "=";
@@ -674,6 +669,7 @@ function walkable(xIndex, yIndex) {
   }
 }
 
+//returns the corresponding building based on location
 function determineBuilding(xIndex, yIndex) {
   if (maps[currentMap] === lilFlexTown) {
     if (xIndex === 6 && yIndex === 14) {
@@ -718,7 +714,8 @@ function determineBuilding(xIndex, yIndex) {
   }
 }
 
-function tileColor(tileString) {  // yo check colors here https://www.quackit.com/css/css_color_codes.cfm
+//returns color based on character from textfile for the map
+function tileColor(tileString) {  
   if (tileString === "#" || tileString === "@") {
     if (insideBuilding) {
       return "#DEB887";
@@ -761,6 +758,7 @@ function tileColor(tileString) {  // yo check colors here https://www.quackit.co
   }
 }
 
+//returns corresponding NPC based on location
 function determineNPC() {
   if (inZone) {
     return wildZoneGuy;
@@ -824,6 +822,7 @@ function determineNPC() {
   }
 }
 
+//returns dialog of specific NPC
 function returnDialog(name) {
   if (name === "Joe") {
     if (canLeaveTown(maps[currentMap])) {
@@ -867,13 +866,8 @@ function returnDialog(name) {
   }
 }
 
-function canLeaveTown(theTown) {
-  // if (theTown === lilFlexTown) {
-  //   return theTown === lilFlexTown && mainPlayer.pokebro.length > 0;
-  // }
-  // else if (theTown === theRanch) {
-  //   reu
-  // }
+//checks to see if u can leave the town, function was created as there was going to be more 
+function canLeaveTown() {
   return mainPlayer.pokebro.length > 0;
 }
 

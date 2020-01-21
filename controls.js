@@ -5,6 +5,7 @@
 // 
 // 12/30/1867
 
+//establishes specific keys as specific buttons
 function keyTyped() {
   if (key ===" ") {
     aPressed = true;
@@ -24,6 +25,7 @@ function keyTyped() {
   }
 } 
 
+//buttons for player movement and battle stuff
 function keyPressed() {
   if (gameState === 1) {
     if (keyCode === RIGHT_ARROW && state === "menu") {
@@ -60,7 +62,7 @@ function keyPressed() {
       state = "insidebattle";
     }
     if (key === " " && state === "bordermove4") {
-      // return to overworld/cannot run if against trainer  btw reuring to overworld just set gameState to 0
+      // return to overworld/cannot run if against trainer  btw returning to overworld just set gameState to 0
     }
   }
   else if (gameState === 0) {
@@ -70,10 +72,12 @@ function keyPressed() {
           cursor++;
         }
         else {
+          //one click turns player second click will move
           if (currentDirections === directions.down) {
             movingDown = true;
           }
           currentDirections = directions.down;
+          //checks if facing a person based off tile in front
           if (insideBuilding) {
             if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
               facingPerson = currentBuilding.grid[mainPlayerIndex.y + 1][mainPlayerIndex.x] === "@";
@@ -93,14 +97,16 @@ function keyPressed() {
           cursor--;
         }
         else {
+          //one click turns player second click will move
           if (currentDirections === directions.up) {
             movingUp = true;
           }
           currentDirections = directions.up;
+          //checks if facing a person based off tile in front
           if (insideBuilding) {
             if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
               if (currentBuilding === pokemonCenter || currentBuilding === pokeMart) {   
-                facingPerson = currentBuilding.grid[mainPlayerIndex.y - 2][mainPlayerIndex.x] === "@";
+                facingPerson = currentBuilding.grid[mainPlayerIndex.y - 2][mainPlayerIndex.x] === "@";  //checks 2 ahead because nurse is behind the counter
               } 
               else {
                 facingPerson = currentBuilding.grid[mainPlayerIndex.y - 1][mainPlayerIndex.x] === "@";
@@ -118,10 +124,12 @@ function keyPressed() {
     else if (keyCode === RIGHT_ARROW) {
       if (!talking) {
         if (!menuOpen) {
+          //one click turns player second click will move
           if (currentDirections === directions.right) {
             movingRight = true;
           }
           currentDirections = directions.right;
+          //checks if facing a person based off tile in front
           if (insideBuilding) {
             if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
               facingPerson = currentBuilding.grid[mainPlayerIndex.y][mainPlayerIndex.x + 1] === "@";
@@ -138,10 +146,12 @@ function keyPressed() {
     else if (keyCode === LEFT_ARROW) {
       if (!talking) {
         if (!menuOpen) {
+          //one click turns player second click will move
           if (currentDirections === directions.left) {
             movingLeft = true;
           }
           currentDirections = directions.left;
+          //checks if facing a person based off tile in front
           if (insideBuilding) {
             if (mainPlayerIndex.x !== 0 || mainPlayerIndex.x !== currentBuilding.grid.length || mainPlayerIndex.y !== 0 || mainPlayerIndex.y !== currentBuilding.grid.length) {
               facingPerson = currentBuilding.grid[mainPlayerIndex.y][mainPlayerIndex.x - 1] === "@";
